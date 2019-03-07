@@ -3,8 +3,6 @@
 apt update && apt upgrade -y
  
 apt install apache2 -y && systemctl start apache2 && systemctl enable apache2
-
-apt-get install software-properties-common -y
  
 apt install php7.0 bzip2 libapache2-mod-php php-gd php-json php-mysql php-curl php-mbstring php-intl php-mcrypt php-imagick php-xml php-zip php-mysql -y
 apt install unzip curl aria2 -y
