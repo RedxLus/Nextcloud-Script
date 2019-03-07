@@ -67,7 +67,7 @@ chown -R www-data:www-data /var/www/html/nextcloud/
 
 cd /var/www/html/nextcloud
 
-sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "nextcloud_user" --database-pass "PASSWORD" --admin-user "admin" --admin-pass "PASSWORD"
+sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "$to_print" --database-pass "$t2o_print" --admin-user "$to_print" --admin-pass "$t2o_print"
 
 nano config/config.php
     
