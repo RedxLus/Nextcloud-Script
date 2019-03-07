@@ -52,18 +52,7 @@ chown -R www-data:www-data /var/www/html/nextcloud/
 
 
 
-# Alias /nextcloud "/var/www/nextcloud/"
-# <Directory /var/www/nextcloud/>
-#   Options +FollowSymlinks
-#   AllowOverride All
-#  <IfModule mod_dav.c>
-#   Dav off
-#  </IfModule>
-#  SetEnv HOME /var/www/nextcloud
-#  SetEnv HTTP_HOME /var/www/nextcloud
-# </Directory>
-
-
-# a2ensite nextcloud
+curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
+a2ensite nextcloud
 a2enmod rewrite headers env dir mime
 systemctl restart apache2
