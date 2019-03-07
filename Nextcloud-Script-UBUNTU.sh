@@ -11,8 +11,8 @@ apt install unzip curl aria2 -y
  
 apt -y install mariadb-server
  
-systemctl enable mariadb
-systemctl start mariadb
+systemctl enable mysql
+systemctl start mysql
 
 apt -y install expect
 
