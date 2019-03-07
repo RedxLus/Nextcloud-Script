@@ -50,25 +50,20 @@ curl -LO https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
 unzip nextcloud-13.0.1.zip -d /var/www/html/
 chown -R www-data:www-data /var/www/html/nextcloud/
 
-# cd /var/www/html
-# wget https://download.nextcloud.com/server/releases/latest-13.tar.bz2 -O nextcloud-13-latest.tar.bz2
-# tar -xvjf nextcloud-13-latest.tar.bz2
-# chown -R www-data:www-data nextcloud
-# rm nextcloud-13-latest.tar.bz2
 
 
-Alias /nextcloud "/var/www/nextcloud/"
-<Directory /var/www/nextcloud/>
-  Options +FollowSymlinks
-  AllowOverride All
- <IfModule mod_dav.c>
-  Dav off
- </IfModule>
- SetEnv HOME /var/www/nextcloud
- SetEnv HTTP_HOME /var/www/nextcloud
-</Directory>
+# Alias /nextcloud "/var/www/nextcloud/"
+# <Directory /var/www/nextcloud/>
+#   Options +FollowSymlinks
+#   AllowOverride All
+#  <IfModule mod_dav.c>
+#   Dav off
+#  </IfModule>
+#  SetEnv HOME /var/www/nextcloud
+#  SetEnv HTTP_HOME /var/www/nextcloud
+# </Directory>
 
 
 # a2ensite nextcloud
-# a2enmod rewrite headers env dir mime
-# systemctl restart apache2
+a2enmod rewrite headers env dir mime
+systemctl restart apache2
