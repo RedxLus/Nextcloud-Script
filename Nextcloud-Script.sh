@@ -61,7 +61,7 @@ curl -LO https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
 unzip nextcloud-13.0.1.zip -d /var/www/html/
 chown -R www-data:www-data /var/www/html/nextcloud/
 
-apt-get install sudo -y
+apt install sudo -y
 
 cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd" && nano config/config.php
     
