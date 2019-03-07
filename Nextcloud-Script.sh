@@ -47,17 +47,11 @@ echo "$SECURE_MYSQL"
 apt -y purge expect
 apt autoremove -y
 
-echo NOMBRE-USUARIO-NEXTCLOUD :
-read to_print
-
-echo CONTRASENA-USUARIO-NEXTCLOUD:
-read t2o_print
-
 
     echo "Please enter root user MySQL password!"
     read rootpasswd
     mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
-    mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO '$to_print'@'localhost' IDENTIFIED BY '$t2o_print';"
+    mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
     mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
     
 wget https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
@@ -67,5 +61,5 @@ chown -R www-data:www-data /var/www/html/nextcloud/
 
 apt-get install sudo -y
 
-cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "$to_print" --database-pass "$t2o_print" --admin-user "$to_print" --admin-pass "$t2o_print" && nano config/config.php
+cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd" && nano config/config.php
     
