@@ -10,3 +10,5 @@ aria2c --enable-rpc --rpc-allow-origin-all -c -D --log=/var/log/aria2c/aria2c.lo
 cd /var/www/html/nextcloud/apps && curl -LO https://github.com/e-alfred/ocdownloader/releases/download/1.5.5/ocdownloader.tar.gz
 tar -xvzf ocdownloader.tar.gz
 rm -r ocdownloader.tar.gz
+
+sudo -u www-data php occ app:enable ocdownloader
