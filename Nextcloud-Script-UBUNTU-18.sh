@@ -1,6 +1,8 @@
 
 #!/bin/bash
 
+apt update && apt upgrade -y
+
 sudo apt-get install -y software-properties-common
 sudo add-apt-repository ppa:ondrej/php -y
 
