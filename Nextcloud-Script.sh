@@ -4,7 +4,7 @@ apt update && apt upgrade -y
  
 apt install apache2 -y && systemctl start apache2 && systemctl enable apache2
  
-apt install php7.0 libapache2-mod-php7.0 php7.0-common php7.0-gd php7.0-json php7.0-mysql php7.0-curl php7.0-mbstring php7.0-intl php7.0-mcrypt php7.0-imagick php7.0-xml php7.0-zip zip unzip -y
+apt install php7.0 libapache2-mod-php7.0 php7.0-common php7.0-gd php7.0-json php7.0-mysql php7.0-curl php7.0-mbstring php7.0-intl php7.0-mcrypt php7.0-imagick php7.0-xml php7.0-zip zip unzip curl aria2 -y
  
 apt -y install mariadb-server
  
@@ -48,13 +48,14 @@ apt -y purge expect
 apt autoremove -y
 
 
+    echo ""
     echo "Please enter root user MySQL password!"
     read rootpasswd
     mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
     mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
     mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
     
-wget https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
+curl -LO https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
 
 unzip nextcloud-13.0.1.zip -d /var/www/html/
 chown -R www-data:www-data /var/www/html/nextcloud/
