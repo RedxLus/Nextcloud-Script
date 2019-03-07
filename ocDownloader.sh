@@ -11,4 +11,4 @@ cd /var/www/html/nextcloud/apps && curl -LO https://github.com/e-alfred/ocdownlo
 tar -xvzf ocdownloader.tar.gz
 rm -r ocdownloader.tar.gz
 
-sudo -u www-data php occ app:enable ocdownloader
+cd /var/www/html/nextcloud  && sudo -u www-data php occ app:enable ocdownloader
