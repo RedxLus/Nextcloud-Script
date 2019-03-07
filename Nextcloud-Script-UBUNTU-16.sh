@@ -1,16 +1,15 @@
 #!/bin/bash
 
-sudo add-apt-repository ppa:ondrej/php
 apt update && apt upgrade -y
  
 apt install apache2 -y && systemctl start apache2 && systemctl enable apache2
 
 apt-get install software-properties-common -y
  
-apt install php7.2 libapache2-mod-php7.2 php7.2-common php7.2-gmp php7.2-curl php7.2-intl php7.2-mbstring php7.2-xmlrpc php7.2-mysql php7.2-gd php7.2-xml php7.2-cli php7.2-zip -y
+apt install php7.0 bzip2 libapache2-mod-php php-gd php-json php-mysql php-curl php-mbstring php-intl php-mcrypt php-imagick php-xml php-zip php-mysql -y
 apt install unzip curl aria2 -y
  
-apt -y install mariadb-server mariadb-client
+apt -y install mariadb-server
  
 systemctl enable mysql
 systemctl start mysql
