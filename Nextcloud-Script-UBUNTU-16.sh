@@ -56,3 +56,5 @@ cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/Re
 a2ensite nextcloud
 a2enmod rewrite headers env dir mime
 systemctl restart apache2
+
+cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd" && nano config/config.php
