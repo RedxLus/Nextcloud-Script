@@ -11,7 +11,7 @@ apt update && apt upgrade -y
  mysql -u root -p
  
  CREATE DATABASE nextcloud;
- CREATE USER 'admin'@'localhost' IDENTIFIED BY 'chocolate55';
+ CREATE USER 'admin'@'localhost' IDENTIFIED BY 'Contraseña';
  GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost';
  FLUSH PRIVILEGES;
  exit;
