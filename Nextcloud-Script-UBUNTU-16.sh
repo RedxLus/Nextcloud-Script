@@ -52,7 +52,7 @@ chown -R www-data:www-data /var/www/html/nextcloud/
 
 
 
-curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
+cd /etc/apache2/sites-available/nextcloud.conf && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
 a2ensite nextcloud
 a2enmod rewrite headers env dir mime
 systemctl restart apache2
