@@ -45,3 +45,4 @@ expect eof
 echo "$SECURE_MYSQL"
 
 apt -y purge expect
+apt autoremove -y
