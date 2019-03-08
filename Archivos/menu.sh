@@ -9,8 +9,8 @@ echo "1. UBUNTU 16"
 echo "2. UBUNTU 18" 
 echo "3. DEBIAN" 
 echo -n "Seleccione una opcion [1 - 3]"
-  read x
-  case $x in
+  read seleccion
+  case $seleccion in
      1)
         echo "Descargando y ejecutando Script para UBUNTU 16"
         wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-UBUNTU-16.sh --no-check-certificate
