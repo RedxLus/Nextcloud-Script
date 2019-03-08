@@ -1,6 +1,11 @@
 #!/bin/bash
 clear
-echo "Elige" 
+echo "¿Cual es tu sistema operativo?" 
+echo ""
+echo "1. Tal"
+echo "2. " 
+echo "3. " 
+echo -n "Seleccione una opcion [1 - 3]"
   read x
   case $x in
      1)
