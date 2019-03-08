@@ -9,13 +9,17 @@ echo -n "Seleccione una opcion [1 - 3]"
   read x
   case $x in
      1)
+        echo "Descargando y ejecutando Script para UBUNTU 16"
         wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-UBUNTU-16.sh --no-check-certificate
      ;;
      2)
+        echo "Descargando y ejecutando Script para UBUNTU 18"
        wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-UBUNTU-18.sh --no-check-certificate
      ;;
      3)
+       echo "Descargando y ejecutando Script para DEBIAN"
        wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-DEBIAN.sh --no-check-certificate
+       
      ;;
      *)
         echo "no se qué numero es"
