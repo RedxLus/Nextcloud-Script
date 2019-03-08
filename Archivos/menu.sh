@@ -11,19 +11,22 @@ echo -n "Seleccione una opcion [1 - 3]"
      1)
         echo "Descargando y ejecutando Script para UBUNTU 16"
         wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-UBUNTU-16.sh --no-check-certificate
-        sh Nextcloud-Script-UBUNTU-16.sh
+        sudo chmod +x Nextcloud-Script-UBUNTU-16.sh
+        sudo sh Nextcloud-Script-UBUNTU-16.sh
      ;;
      2)
         echo "Descargando y ejecutando Script para UBUNTU 18"
         wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-UBUNTU-18.sh --no-check-certificate
-        sh Nextcloud-Script-UBUNTU-18.sh
+                sudo chmod +x Nextcloud-Script-UBUNTU-18.sh
+        sudo sh Nextcloud-Script-UBUNTU-18.sh
      ;;
      3)
         echo "Descargando y ejecutando Script para DEBIAN"
         wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-DEBIAN.sh --no-check-certificate
-        sh Nextcloud-Script-DEBIAN.sh
+        sudo chmod +x Nextcloud-Script-DEBIAN.sh
+        sudo sh Nextcloud-Script-DEBIAN.sh
      ;;
      *)
-        echo "no se qué numero es"
+        echo "Numero no reconocido."
      ;;
   esac
