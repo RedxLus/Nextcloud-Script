@@ -1,6 +1,9 @@
 #!/bin/bash
 clear
-echo "¿Cual es tu sistema operativo?" 
+echo ""
+echo "Comprobacion previa. Este es tu sistema Operativo:"
+cat  /etc/issue
+echo "Ahora escribe el numero correspondiente para comenzar la instalacion automatica de Nextcloud:" 
 echo ""
 echo "1. UBUNTU 16"
 echo "2. UBUNTU 18" 
