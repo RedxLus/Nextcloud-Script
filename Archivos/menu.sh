@@ -11,14 +11,14 @@ echo -n "Seleccione una opcion [1 - 4]"
 read opcion
 case $opcion in
 1) echo "La configuración de red:";
-ifconfig;;
+ip addr show;;
 2) echo "El uso de disco:";
 df;;
 3) echo "El uso de RAM:";
 free;;
 4) echo "agur";
 exit 1;;
-*) echo "$opc no es una opcion válida.";
+*) echo "$opcion no es una opcion válida.";
 echo "Presiona una tecla para continuar...";
 read foo;;
 esac
