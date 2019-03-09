@@ -12,7 +12,9 @@ apt install php7.0 libapache2-mod-php7.0 php7.0-common php7.0-gd php7.0-json php
 apt install unzip curl aria2 -y
  
 apt -y install mariadb-server
- 
+
+/etc/init.d/mysql stop &&  /etc/init.d/mysql start
+
 systemctl enable mariadb
 systemctl start mariadb
 
