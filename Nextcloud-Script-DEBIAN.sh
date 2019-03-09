@@ -1,8 +1,7 @@
 #!/bin/bash
 
     echo ""
-    echo "Please enter root user MySQL password!"
-    echo "Is by default the same as root user:"
+    echo "Please enter root password (same as root user) to use in MySQL"
     read rootpasswd
     
 apt update && apt upgrade -y
