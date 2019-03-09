@@ -26,6 +26,8 @@ echo -n "Seleccione una opcion [1 - 3]"
      3)
         echo "Descargando y ejecutando Script para DEBIAN"
         wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-DEBIAN.sh --no-check-certificate
+        su -
+        apt-get install sudo -y
         sudo chmod +x Nextcloud-Script-DEBIAN.sh
         sudo sh Nextcloud-Script-DEBIAN.sh && rm -r Nextcloud-Script-DEBIAN.sh
      ;;
