@@ -13,7 +13,7 @@ apt install unzip curl aria2 -y
  
 apt -y install mariadb-server
 
-/etc/init.d/mysql stop &&  /etc/init.d/mysql start
+/etc/init.d/mysql stop && /etc/init.d/mysql start
 
 systemctl enable mariadb
 systemctl start mariadb
