@@ -1,4 +1,16 @@
 #!/bin/bash
+
+if ! [ $(id -u) = 0 ]; then
+   echo "The script need to be run as root." >&2
+   exit 1
+fi
+
+if [ $SUDO_USER ]; then
+    real_user=$SUDO_USER
+else
+    real_user=$(whoami)
+fi
+
 clear
 echo ""
 echo "Comprobacion previa. Este es tu sistema Operativo:"
@@ -14,13 +26,13 @@ echo -n "Seleccione una opcion [1 - 3]"
      1)
         echo "Descargando y ejecutando Script para UBUNTU 16"
         wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-UBUNTU-16.sh --no-check-certificate
-        sudo chmod +x Nextcloud-Script-UBUNTU-16.sh
+        chmod +x Nextcloud-Script-UBUNTU-16.sh
         sudo sh Nextcloud-Script-UBUNTU-16.sh && rm -r Nextcloud-Script-UBUNTU-16.sh
      ;;
      2)
         echo "Descargando y ejecutando Script para UBUNTU 18"
         wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-UBUNTU-18.sh --no-check-certificate
-        sudo chmod +x Nextcloud-Script-UBUNTU-18.sh
+        chmod +x Nextcloud-Script-UBUNTU-18.sh
         sudo sh Nextcloud-Script-UBUNTU-18.sh && rm -r Nextcloud-Script-UBUNTU-18.sh
      ;;
      3)
