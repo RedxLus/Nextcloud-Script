@@ -1,5 +1,9 @@
 #!/bin/bash
 
+    echo ""
+    echo "Please enter root user MySQL password!"
+    read rootpasswd
+
 apt update && apt upgrade -y
  
  apt-get install apache2 libapache2-mod-php7.0 bzip2 unzip curl -y
@@ -38,10 +42,6 @@ echo "$SECURE_MYSQL"
 apt -y purge expect
 apt autoremove -y
 
-
-    echo ""
-    echo "Please enter root user MySQL password!"
-    read rootpasswd
     mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
     mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
     mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
@@ -52,11 +52,9 @@ curl -LO https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
 unzip nextcloud-13.0.1.zip -d /var/www/html/
 chown -R www-data:www-data /var/www/html/nextcloud/
 
-
-
 cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
 a2ensite nextcloud
 a2enmod rewrite headers env dir mime
 systemctl restart apache2
 
-cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd" && nano config/config.php
+cd /var/www/html/nextcloud && sudo -u www-data php occ maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd" && nano config/config.php
