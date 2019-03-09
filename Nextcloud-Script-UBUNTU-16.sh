@@ -8,6 +8,8 @@ apt update && apt upgrade -y
  
  apt-get install mariadb-server php-mysql -y
  
+ /etc/init.d/mysql stop && /etc/init.d/mysql start
+ 
  apt -y install expect
 
 // Not required in actual script
