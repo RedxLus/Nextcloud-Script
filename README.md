@@ -27,4 +27,12 @@ sh menu.sh
 ```
 
 
+## Probado y funcional
 
+* Máquinas Virtuales CT (Container Linux = KVM and LXC) en Proxmox: DEBIAN, Ubuntu 16/18
+* 
+
+## Aún probando (no funcionales)
+
+* Windows Subsystem linux
+* 
