@@ -49,7 +49,10 @@ yum clean all
 curl -LO https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
 
 unzip nextcloud-13.0.1.zip -d /var/www/html/
-mkdir /var/www/html/nextcloud/data && chown -R apache:apache nextcloud
+mkdir /var/www/html/nextcloud/data && cd /var/www/html && chown -R apache:apache nextcloud
 
 cd /etc/httpd/conf.d && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
+
+systemctl start httpd
+systemctl enable httpd
 
