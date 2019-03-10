@@ -6,7 +6,8 @@ Please not finished so not use
 
 
 
-🇪🇸 
+
+<img src="https://images.emojiterra.com/twitter/v11/128px/1f1ea-1f1f8.png" alt="Flowers in Chania" width="5%">
 
 Script de instalación rápida de Nextcloud<br>
 Por favor, no terminado, así que no lo use
