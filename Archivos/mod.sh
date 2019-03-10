@@ -13,7 +13,7 @@ read respuesta
 
 if [ $respuesta = 1 ]
 then
-sed -i "8i 1 => \'$laip\',"  config.php && echo "Todo correcto"
+cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'$laip\',"  config.php && echo "Todo correcto"
 else
 echo "Saliendo"
 fi
