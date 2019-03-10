@@ -8,7 +8,7 @@ yum update -y
 yum install epel-release -y
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 
-yum install httpd unzip php70w php70w-dom php70w-mbstring php70w-gd php70w-pdo php70w-json php70w-xml php70w-zip php70w-curl php70w-mcrypt php70w-pear setroubleshoot-server bzip2 -y
+yum install httpd unzip php70w php70w-dom php70w-mbstring php70w-gd php70w-pdo php70w-json php70w-xml php70w-zip php70w-curl php70w-mcrypt php70w-pear setroubleshoot-server bzip2 sudo -y
 
 yum install mariadb-server php70w-mysql -y
 
@@ -57,7 +57,4 @@ cd /etc/httpd/conf.d && curl -LO https://raw.githubusercontent.com/RedxLus/Nextc
 systemctl start httpd
 systemctl enable httpd
 
-
 cd /var/www/html/nextcloud && sudo -u apache php occ maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd"
-
-
