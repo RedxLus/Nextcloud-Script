@@ -43,7 +43,8 @@ yum remove expect -y
 yum clean all
 
     mysql -uroot -e "CREATE DATABASE nextcloud;"
-    mysql -uroot -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
+    mysql -uroot -e "CREATE USER 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
+    mysql -uroot -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost';"
     mysql -uroot -e "FLUSH PRIVILEGES;"
     
 curl -LO https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
