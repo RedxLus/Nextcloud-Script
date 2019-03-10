@@ -23,7 +23,6 @@ Tambien entrando diretamente como usuario root y ejecutando el script:
 ```
 su
 ```
-Contraseña root
 ```
 sh menu.sh
 ```
