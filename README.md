@@ -33,17 +33,28 @@ sh menu.sh
 ## Probado y funcional
 
 - Máquinas Virtuales CT (Linux Containers = **LXC**) en Proxmox:
-  - DEBIAN  :heavy_check_mark:
-  - Ubuntu 16  :heavy_check_mark:
-  - Ubuntu 18  :heavy_check_mark:
-  - CentOS  :heavy_check_mark:
+  - [x]  DEBIAN  :heavy_check_mark:
+  - [x]  Ubuntu 16  :heavy_check_mark:
+  - [x]  Ubuntu 18  :heavy_check_mark:
+  - [x]  CentOS  (<a href="#errores">clic para ver posibles errores</a>)
 - Máquinas Virtuales VM (**KVM**) en Proxmox: 
-  - DEBIAN  :heavy_check_mark:
-  - Ubuntu 16  :heavy_check_mark:
-  - Ubuntu 18  :heavy_check_mark:
+  - [x]  DEBIAN  :heavy_check_mark:
+  - [x]  Ubuntu 16  :heavy_check_mark:
+  - [x]  Ubuntu 18  :heavy_check_mark:
 
 
 ## Aún probando (no funcionales)
 
 - Windows Subsystem linux
+
+## Errores
+
+#### CentOS
+En LXC antes de usar el script necesita:
+```
+yum update -y && reboot
+```
+
+
+
 
