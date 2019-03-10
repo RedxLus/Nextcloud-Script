@@ -1,6 +1,10 @@
 
 #!/bin/bash
 
+    echo ""
+    echo "Please enter root user MySQL password!"
+    read rootpasswd
+
 apt update && apt upgrade -y
 
 sudo apt-get install -y software-properties-common
@@ -42,10 +46,6 @@ echo "$SECURE_MYSQL"
 apt -y purge expect
 apt autoremove -y
 
-
-    echo ""
-    echo "Please enter root user MySQL password!"
-    read rootpasswd
     mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
     mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
     mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
