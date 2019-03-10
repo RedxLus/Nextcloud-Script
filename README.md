@@ -1,12 +1,13 @@
 # Nextcloud-Script
-Quick Nextcloud-Script installation <br><br>
-Please not finished so not use
-<br><br>
-Tested in:<br><br>
-VPS root Ubuntu 16/18 and Debian<br>
-Windows download Microsoft Store Ubuntu 16/18 and Debian
+Quick Nextcloud-Script installation 
 
-🇪🇸 <br>
+
+Please not finished so not use
+
+
+
+🇪🇸 
+
 Script de instalación rápida de Nextcloud<br>
 Por favor, no terminado, así que no lo use
 
@@ -36,4 +37,4 @@ sh menu.sh
 ## Aún probando (no funcionales)
 
 * Windows Subsystem linux
-* 
+* * 
