@@ -67,5 +67,7 @@ apt install sudo -y
 
 cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd"
 
+
+curl -LO https://github.com/RedxLus/Nextcloud-Script/blob/master/Archivos/mod.sh -k && sh mod.sh
+
 curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/pedir.sh -k && sh pedir.sh
-    
