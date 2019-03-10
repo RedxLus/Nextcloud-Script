@@ -31,13 +31,14 @@ sh menu.sh
 
 ## Probado y funcional
 
-* Máquinas Virtuales CT (Linux Containers = LXC) en Proxmox:
-* * DEBIAN  :heavy_check_mark:
-* * Ubuntu 16  :heavy_check_mark:
- * Ubuntu 18  :heavy_check_mark:
-* Máquinas Virtuales VM (KVM) en Proxmox: DEBIAN, Ubuntu 16/18
+- Máquinas Virtuales CT (Linux Containers = LXC) en Proxmox:
+  - DEBIAN  :heavy_check_mark:
+  - Ubuntu 16  :heavy_check_mark:
+  - Ubuntu 18  :heavy_check_mark:
+- Máquinas Virtuales VM (KVM) en Proxmox: DEBIAN, Ubuntu 16/18
+
 
 ## Aún probando (no funcionales)
 
-* Windows Subsystem linux
-** 
+- Windows Subsystem linux
+
