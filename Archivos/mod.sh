@@ -6,8 +6,8 @@ laip=$(ifconfig|awk 'NR == 2'|awk '{print $2}'|cut -d ':' -f2)
 clear
 
 echo "Su IP es $laip. ¿Es correcta?. Puede modificarla despues en /var/www/html/nextcloud/config/config.php "
-echo "1. Si. Puede añadirla automaticamente para que funcione NextCloud."
-echo "2. No. No es mi ip o quiero hacerlo manual."
+echo "1. Si. Quiero añadirla automaticamente para que funcione NextCloud (la IP se añadira al archivo de configuracion)."
+echo "2. No. No es mi ip o quiero hacerlo manualmente."
 echo -n "Seleccione una opcion [1 - 2]"
 read respuesta
 
