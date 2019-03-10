@@ -15,7 +15,7 @@ yum install mariadb-server php70w-mysql -y
 systemctl start mariadb
 systemctl enable mariadb
 
-apt -y install expect
+yum -y install expect
 
 // Not required in actual script
 MYSQL_ROOT_PASSWORD=abcd1234
@@ -40,8 +40,8 @@ expect eof
 
 echo "$SECURE_MYSQL"
 
-apt -y purge expect
-apt autoremove -y
+yum remove expect -y
+yum clean all
 
     mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
     mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
