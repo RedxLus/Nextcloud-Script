@@ -29,8 +29,8 @@ sh menu.sh
 
 ## Probado y funcional
 
-* Máquinas Virtuales CT (Container Linux = KVM and LXC) en Proxmox: DEBIAN, Ubuntu 16/18
-* 
+* Máquinas Virtuales CT (Linux Containers = LXC) en Proxmox: DEBIAN, Ubuntu 16/18
+* Máquinas Virtuales VM (KVM) en Proxmox: DEBIAN, Ubuntu 16/18
 
 ## Aún probando (no funcionales)
 
