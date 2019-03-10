@@ -17,7 +17,6 @@ systemctl enable mariadb
 
 yum -y install expect
 
-// Not required in actual script
 MYSQL_ROOT_PASSWORD=abcd1234
 
 SECURE_MYSQL=$(expect -c "
@@ -43,9 +42,9 @@ echo "$SECURE_MYSQL"
 yum remove expect -y
 yum clean all
 
-    mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
-    mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
-    mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
+    mysql -uroot -e "CREATE DATABASE nextcloud;"
+    mysql -uroot -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
+    mysql -uroot -e "FLUSH PRIVILEGES;"
     
 curl -LO https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
 
