@@ -36,6 +36,7 @@ sh menu.sh
   - DEBIAN  :heavy_check_mark:
   - Ubuntu 16  :heavy_check_mark:
   - Ubuntu 18  :heavy_check_mark:
+  - CentOS  :heavy_check_mark:
 - Máquinas Virtuales VM (**KVM**) en Proxmox: 
   - DEBIAN  :heavy_check_mark:
   - Ubuntu 16  :heavy_check_mark:
