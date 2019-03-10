@@ -10,7 +10,7 @@ Windows download Microsoft Store Ubuntu 16/18 and Debian
 Script de instalación rápida de Nextcloud<br>
 Por favor, no terminado, así que no lo use
 
-## Istalación
+## Instalación
 
 Necesita ejecutar el Script con permisos root. Para ello segun el sistema puede hacerlo de varias maneras:
 
