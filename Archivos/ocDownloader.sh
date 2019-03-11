@@ -1,6 +1,6 @@
 #!/bin/bash    
     
-apt-get install aria2 curl
+apt-get install aria2 curl -y
 mkdir /var/log/aria2c /var/local/aria2c
 touch /var/log/aria2c/aria2c.log
 touch /var/local/aria2c/aria2c.sess
