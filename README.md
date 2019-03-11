@@ -7,7 +7,7 @@ Please not finished so not use
 
 
 
-<a href="#instalación"><img src="https://images.emojiterra.com/twitter/v11/128px/1f1ea-1f1f8.png" alt="Flowers in Chania" width="5%"></a>
+<a href="#instalación"><img src="https://images.emojiterra.com/twitter/v11/128px/1f1ea-1f1f8.png" alt="spanish" width="5%"></a>
 
 Script de instalación rápida de Nextcloud<br>
 Por favor, no terminado, así que no lo use
@@ -17,7 +17,7 @@ Por favor, no terminado, así que no lo use
 Necesita ejecutar el Script con permisos root. Para ello segun el sistema puede hacerlo de varias maneras:
 
 ```
-sudo sh menu.sh
+sudo sh Nextcloud-Script.sh
 ```
 
 Tambien entrando diretamente como usuario root y ejecutando el script:
@@ -26,7 +26,7 @@ Tambien entrando diretamente como usuario root y ejecutando el script:
 su
 ```
 ```
-sh menu.sh
+sh Nextcloud-Script.sh
 ```
 
 
