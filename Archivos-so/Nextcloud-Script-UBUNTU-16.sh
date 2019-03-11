@@ -57,4 +57,8 @@ a2ensite nextcloud
 a2enmod rewrite headers env dir mime
 systemctl restart apache2
 
-cd /var/www/html/nextcloud && sudo -u www-data php occ maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd" && nano config/config.php
+cd /var/www/html/nextcloud && sudo -u www-data php occ maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd"
+
+curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/ip-config.php.sh -k && sh ip-config.php.sh && rm ip-config.php.sh
+
+curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/instalar-oc.sh -k && sh instalar-oc.sh && rm instalar-oc.sh
