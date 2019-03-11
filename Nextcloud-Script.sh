@@ -26,25 +26,25 @@ echo -n "Seleccione una opcion [1 - 4]"
   case $seleccion in
      1)
         echo "Descargando y ejecutando Script para UBUNTU 16"
-        wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-UBUNTU-16.sh --no-check-certificate
+        wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos-so/Nextcloud-Script-UBUNTU-16.sh --no-check-certificate
         chmod +x Nextcloud-Script-UBUNTU-16.sh
         sudo sh Nextcloud-Script-UBUNTU-16.sh && rm -r Nextcloud-Script-UBUNTU-16.sh
      ;;
      2)
         echo "Descargando y ejecutando Script para UBUNTU 18"
-        wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-UBUNTU-18.sh --no-check-certificate
+        wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos-so/Nextcloud-Script-UBUNTU-18.sh --no-check-certificate
         chmod +x Nextcloud-Script-UBUNTU-18.sh
         sudo sh Nextcloud-Script-UBUNTU-18.sh && rm -r Nextcloud-Script-UBUNTU-18.sh
      ;;
      3)
         echo "Descargando y ejecutando Script para DEBIAN"
-        wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-DEBIAN.sh --no-check-certificate
+        wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos-so/Nextcloud-Script-DEBIAN.sh --no-check-certificate
         chmod +x Nextcloud-Script-DEBIAN.sh
         sh Nextcloud-Script-DEBIAN.sh && rm -r Nextcloud-Script-DEBIAN.sh
      ;;
      4)
         echo "Descargando y ejecutando Script para DEBIAN"
-        curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Nextcloud-Script-CENTOS.sh -k
+        curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos-so/Nextcloud-Script-CENTOS.sh -k
         chmod +x Nextcloud-Script-CENTOS.sh
         sh Nextcloud-Script-CENTOS.sh && rm -r Nextcloud-Script-CENTOS.sh
      ;;
