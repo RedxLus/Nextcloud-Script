@@ -14,13 +14,13 @@ Por favor, no terminado, así que no lo use
 
 ## Instalación
 
-Necesita ejecutar el Script con permisos root. Para ello segun el sistema puede hacerlo de varias maneras:
+Necesita ejecutar el Script con permisos root. Para ello, según el sistema operativo, puede hacerlo de varias formas:
 
 ```
 sudo sh Nextcloud-Script.sh
 ```
 
-Tambien entrando diretamente como usuario root y ejecutando el script:
+También entrando directamente como usuario root y ejecutando el script:
 
 ```
 su
@@ -29,6 +29,11 @@ su
 sh Nextcloud-Script.sh
 ```
 
+La instalación dura aproximadamente 4 minutos. Aunque puede variar.
+
+Se instala la versión 13 (para mayor compatibilidad. Se puede actualizar desde dentro.)
+
+El proceso se basa en menús. Al inicio y al final. 
 
 ## Probado y funcional
 
