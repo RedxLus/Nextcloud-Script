@@ -10,7 +10,7 @@ echo -n "Seleccione una opcion [1 - 2]"
   case $seleccion in
      1)
         echo "Instalando y activando"
-        curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/ocDownloader.sh -k
+        curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/ocDownloader.sh -k
         chmod +x ocDownloader.sh
         sh ocDownloader.sh && rm -r ocDownloader.sh
      ;;
