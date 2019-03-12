@@ -57,6 +57,7 @@ chown -R www-data:www-data /var/www/html/nextcloud/
 cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
 a2ensite nextcloud
 a2enmod rewrite headers env dir mime
+a2enmod ssl && a2ensite default-ssl.conf
 systemctl restart apache2
 
 cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd" 
