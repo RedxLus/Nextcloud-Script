@@ -1,3 +1,0 @@
-sudo wget https://dl.eff.org/certbot-auto && sudo chmod a+x certbot-auto
-
-sudo ./certbot-auto --apache --agree-tos --rsa-key-size 4096 --email user@domain.org --redirect -d nc.domain.org
