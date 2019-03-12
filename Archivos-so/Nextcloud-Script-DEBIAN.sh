@@ -21,7 +21,7 @@ apt -y install mariadb-server
 systemctl enable mariadb
 systemctl start mariadb
 
-#Instalacion seguda mysql fuente (https://bit.ly/2T09N8A)
+#Instalacion segura mysql. Fuente (https://bit.ly/2T09N8A)
 apt -y install expect
 MYSQL_ROOT_PASSWORD=abcd1234
 
