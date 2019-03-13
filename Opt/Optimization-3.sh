@@ -8,3 +8,5 @@ sed -i "22i      'port' => 6379, " /var/www/html/nextcloud/config/config.php
 sed -i "23i ], " /var/www/html/nextcloud/config/config.php
 
 sed -i "24i 'memcache.locking' => '\\\\OC\\\\Memcache\\\\Redis'," /var/www/html/nextcloud/config/config.php
+
+service apache2 restart
