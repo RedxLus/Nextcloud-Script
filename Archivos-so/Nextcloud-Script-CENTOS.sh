@@ -58,3 +58,7 @@ systemctl start httpd
 systemctl enable httpd
 
 cd /var/www/html/nextcloud && sudo -u apache php occ maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd"
+
+#Menu 1 (ip)
+yum install net-tools -y
+curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/ip-config.php.sh -k && sh ip-config.php.sh && rm -r ip-config.php.sh
