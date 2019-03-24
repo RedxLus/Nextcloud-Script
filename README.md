@@ -6,7 +6,7 @@ Quick Nextcloud-Script installation
 <a href="#instalación"><img src="https://images.emojiterra.com/twitter/v11/128px/1f1ea-1f1f8.png" alt="spanish" width="5%"></a>
 
 Script de instalación rápida de Nextcloud<br>
-Por favor, no terminado, así que no lo use
+
 
 ## Instalación
 
