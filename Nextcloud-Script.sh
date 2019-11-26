@@ -78,7 +78,7 @@ ubuntu_16 () {
 
    ip_config
 
-   curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/instalar-oc.sh -k && sh instalar-oc.sh && rm instalar-oc.sh
+   menu_oc
 }
 
 ip_config () {
@@ -95,9 +95,9 @@ ip_config () {
 
    if [ $respuesta = 1 ]
    then
-   cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'$laip\',"  config.php && echo "Todo correcto"
+      cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'$laip\',"  config.php && echo "Todo correcto"
    else
-   echo "Saliendo"
+      echo "Saliendo"
    fi
 }
 
