@@ -224,15 +224,11 @@ echo -n "Seleccione una opcion [1 - 4]"
   case $seleccion in
      1)
         echo "Descargando y ejecutando Script para UBUNTU 16"
-        wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos-so/Nextcloud-Script-UBUNTU-16.sh --no-check-certificate
-        chmod +x Nextcloud-Script-UBUNTU-16.sh
-        sudo sh Nextcloud-Script-UBUNTU-16.sh && rm -r Nextcloud-Script-UBUNTU-16.sh
+        ubuntu_16
      ;;
      2)
         echo "Descargando y ejecutando Script para UBUNTU 18"
-        wget https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos-so/Nextcloud-Script-UBUNTU-18.sh --no-check-certificate
-        chmod +x Nextcloud-Script-UBUNTU-18.sh
-        sudo sh Nextcloud-Script-UBUNTU-18.sh && rm -r Nextcloud-Script-UBUNTU-18.sh
+        ubuntu_18
      ;;
      3)
         echo "Descargando y ejecutando Script para DEBIAN"
