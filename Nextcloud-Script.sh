@@ -79,10 +79,12 @@ debian () {
        mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
        mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
 
-   #Descarga. Descomprimir Nextcloud. Privilegios
+   #Descarga. Descomprimir Nextcloud. Privilegios. Elimina.
    curl -LO https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
    unzip nextcloud-13.0.1.zip -d /var/www/html/
    chown -R www-data:www-data /var/www/html/nextcloud/
+   rm -r nextcloud-13.0.1.zip
+   
 
    #Insta sudo (necesario si no esta instalado, aunque suele estarlo)
    apt install sudo -y
