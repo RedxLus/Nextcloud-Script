@@ -94,10 +94,10 @@ debian () {
    systemctl restart apache2
 
    #Menu 1 (ip)
-   curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/ip-config.php.sh -k && sh ip-config.php.sh && rm ip-config.php.sh
-
+   ip_config
+   
    #Menu 2 (ocdownloader)
-   curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/instalar-oc.sh -k && sh instalar-oc.sh && rm instalar-oc.sh
+   menu_oc
 }
 
 ubuntu_16 () {
