@@ -11,14 +11,20 @@ else
     real_user=$(whoami)
 fi
 
-debian () {
+pedir_mysql_y_update () {
+
    # Pedir contraseña root para Mysql
        echo ""
        echo "Please enter root password (same as root user) to use in MySQL"
        read rootpasswd
-
+       
    # Actualizar
    apt update && apt upgrade -y
+}
+
+debian () {
+
+   pedir_mysql_y_update
 
    # Instalar apache, activar modulos y reiniciar
    apt install apache2 -y && /etc/init.d/apache2 start && systemctl enable apache2 && a2enmod rewrite headers env dir mime && a2enmod ssl && a2ensite default-ssl.conf && /etc/init.d/apache2 restart
@@ -101,11 +107,8 @@ debian () {
 }
 
 ubuntu_16 () {
-       echo ""
-       echo "Please enter root user MySQL password!"
-       read rootpasswd
 
-    apt update && apt upgrade -y
+    pedir_mysql_y_update
 
     apt-get install apache2 libapache2-mod-php7.0 bzip2 unzip curl -y
     apt-get install php7.0-gd php7.0-json php7.0-mysql php7.0-curl php7.0-mbstring -y
@@ -171,11 +174,8 @@ ubuntu_16 () {
 }
 
 ubuntu_18 () {
-       echo ""
-       echo "Please enter root user MySQL password!"
-       read rootpasswd
 
-   apt update && apt upgrade -y
+   pedir_mysql_y_update
 
    sudo apt-get install -y software-properties-common
    sudo add-apt-repository ppa:ondrej/php -y
