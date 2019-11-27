@@ -5,12 +5,6 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
-if [ $SUDO_USER ]; then
-    real_user=$SUDO_USER
-else
-    real_user=$(whoami)
-fi
-
 pedir_mysql_y_update () {
 
    # Pedir contraseña root para Mysql
@@ -41,7 +35,6 @@ debian () {
 
    #Instalacion segura mysql. Fuente (https://bit.ly/2T09N8A)
    apt -y install expect
-   MYSQL_ROOT_PASSWORD=abcd1234
 
    SECURE_MYSQL=$(expect -c "
 
@@ -49,7 +42,7 @@ debian () {
    spawn mysql_secure_installation
 
    expect \"Enter current password for root (enter for none):\"
-   send \"$MYSQL\r\"
+   send \"$rootpasswd\r\"
 
    expect \"Change the root password?\"
    send \"n\r\"
@@ -68,8 +61,7 @@ debian () {
 
    expect eof
    ")
-
-   echo "$SECURE_MYSQL"
+            "
 
    apt -y purge expect
    apt autoremove -y
@@ -123,13 +115,11 @@ ubuntu_16 () {
     apt -y install expect
 
 
-   MYSQL_ROOT_PASSWORD=abcd1234
-
    SECURE_MYSQL=$(expect -c "
    set timeout 10
    spawn mysql_secure_installation
    expect \"Enter current password for root (enter for none):\"
-   send \"$MYSQL\r\"
+   send \"$rootpasswd\r\"
    expect \"Change the root password?\"
    send \"n\r\"
    expect \"Remove anonymous users?\"
@@ -143,7 +133,7 @@ ubuntu_16 () {
    expect eof
    ")
 
-   echo "$SECURE_MYSQL"
+      "
 
    apt -y purge expect
    apt autoremove -y
