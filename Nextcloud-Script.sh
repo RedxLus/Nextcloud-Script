@@ -178,31 +178,10 @@ ubuntu_18 () {
     apt-get install php7.0-intl php7.0-mcrypt php-imagick php7.0-xml php7.0-zip -y
 
     apt-get install mariadb-server php-mysql -y
-
-    apt -y install expect
-
-   MYSQL_ROOT_PASSWORD=abcd1234
-
-   SECURE_MYSQL=$(expect -c "
-   set timeout 10
-   spawn mysql_secure_installation
-   expect \"Enter current password for root (enter for none):\"
-   send \"$MYSQL\r\"
-   expect \"Change the root password?\"
-   send \"n\r\"
-   expect \"Remove anonymous users?\"
-   send \"y\r\"
-   expect \"Disallow root login remotely?\"
-   send \"y\r\"
-   expect \"Remove test database and access to it?\"
-   send \"y\r\"
-   expect \"Reload privilege tables now?\"
-   send \"y\r\"
-   expect eof
-   ")
-
-   apt -y purge expect
-   apt autoremove -y
+    
+    curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/dev2/mysql_secure_installation_MARIADB.sh -k
+    chmod +x mysql_secure_installation_MARIADB.sh
+    sh mysql_secure_installation_MARIADB.sh && rm -r mysql_secure_installation_MARIADB.sh
 
        mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
        mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
