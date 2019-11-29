@@ -5,6 +5,8 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
+seleccion="inicializacion"
+
 pedir_mysql_y_update () {
 
    # Pedir contraseña root para Mysql
@@ -290,41 +292,49 @@ instalar_oc () {
    cd /var/www/html/nextcloud  && sudo -u www-data php occ app:enable ocdownloader
 }
 
-clear
-echo ""
-echo "Comprobacion previa. Este es tu sistema Operativo:"
-cat  /etc/issue
-echo "Ahora escribe el numero correspondiente para comenzar la instalacion automatica de Nextcloud:" 
-echo ""
-echo "1. UBUNTU 16"
-echo "2. UBUNTU 18" 
-echo "3. DEBIAN" 
-echo "4. CentOS" 
-echo -n "Seleccione una opcion [1 - 4]"
-  read seleccion
-  case $seleccion in
-     1)
-        echo "Descargando y ejecutando Script para UBUNTU 16"
-        
-        ubuntu_16
-     ;;
-     2)
-        echo "Descargando y ejecutando Script para UBUNTU 18"
-        
-        ubuntu_18
-     ;;
-     3)
-        echo "Descargando y ejecutando Script para DEBIAN"
-        
-        debian
-     ;;
-     4)
-        echo "Descargando y ejecutando Script para CENTOS"
-        curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos-so/Nextcloud-Script-CENTOS.sh -k
-        chmod +x Nextcloud-Script-CENTOS.sh
-        sh Nextcloud-Script-CENTOS.sh && rm -r Nextcloud-Script-CENTOS.sh
-     ;;
-     *)
-        echo "Numero no reconocido."
-     ;;
-  esac
+until [ "$seleccion" = "5" ]; do
+   clear
+   echo ""
+   echo "Comprobacion previa. Este es tu sistema Operativo:"
+   cat  /etc/issue
+   echo "Ahora escribe el numero correspondiente para comenzar la instalacion automatica de Nextcloud:" 
+   echo ""
+   echo "1. UBUNTU 16"
+   echo "2. UBUNTU 18" 
+   echo "3. DEBIAN" 
+   echo "4. CentOS" 
+   echo "" 
+   echo "5. Salir del script. Exit" 
+   echo -n "Seleccione una opcion [1 - 4]"
+     read seleccion
+     case $seleccion in
+        1)
+           echo "Descargando y ejecutando Script para UBUNTU 16"
+
+           ubuntu_16
+        ;;
+        2)
+           echo "Descargando y ejecutando Script para UBUNTU 18"
+
+           ubuntu_18
+        ;;
+        3)
+           echo "Descargando y ejecutando Script para DEBIAN"
+
+           debian
+        ;;
+        4)
+           echo "Descargando y ejecutando Script para CENTOS"
+           curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos-so/Nextcloud-Script-CENTOS.sh -k
+           chmod +x Nextcloud-Script-CENTOS.sh
+           sh Nextcloud-Script-CENTOS.sh && rm -r Nextcloud-Script-CENTOS.sh
+        ;;
+        5)
+           echo "Saliendo ..."
+           exit
+        ;;
+        *)
+           echo "Numero no reconocido."
+        ;;
+     esac
+done
