@@ -135,8 +135,6 @@ ubuntu_16 () {
    expect eof
    ")
 
-      "
-
    apt -y purge expect
    apt autoremove -y
 
