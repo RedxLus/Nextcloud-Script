@@ -63,7 +63,6 @@ debian () {
 
    expect eof
    ")
-            "
 
    apt -y purge expect
    apt autoremove -y
