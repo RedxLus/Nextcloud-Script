@@ -15,6 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
 
+# Fuente: https://raw.githubusercontent.com/twitter-forks/mysql/master/scripts/mysql_secure_installation.sh
+
 config=".my.cnf.$$"
 command=".mysql.$$"
 mysql_client=""
