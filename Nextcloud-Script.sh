@@ -112,30 +112,10 @@ ubuntu_16 () {
     apt-get install mariadb-server php-mysql -y
 
     /etc/init.d/mysql stop && /etc/init.d/mysql start
-
-    apt -y install expect
-
-
-   SECURE_MYSQL=$(expect -c "
-   set timeout 10
-   spawn mysql_secure_installation
-   expect \"Enter current password for root (enter for none):\"
-   send \"$rootpasswd\r\"
-   expect \"Change the root password?\"
-   send \"n\r\"
-   expect \"Remove anonymous users?\"
-   send \"y\r\"
-   expect \"Disallow root login remotely?\"
-   send \"y\r\"
-   expect \"Remove test database and access to it?\"
-   send \"y\r\"
-   expect \"Reload privilege tables now?\"
-   send \"y\r\"
-   expect eof
-   ")
-
-   apt -y purge expect
-   apt autoremove -y
+    
+    curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/dev2/mysql_secure_installation_MARIADB.sh -k
+    chmod +x mysql_secure_installation_MARIADB.sh
+    sudo sh mysql_secure_installation_MARIADB.sh && rm -r mysql_secure_installation_MARIADB.sh
 
        mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
        mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
@@ -173,7 +153,7 @@ ubuntu_18 () {
 
    apt update && apt upgrade -y
 
-    apt-get install apache2 libapache2-mod-php7.0 bzip2 unzip curl -y
+    apt-get install apache2 libapache2-mod-php7.0 bzip2 unzip curl sudo -y
     apt-get install php7.0-gd php7.0-json php7.0-mysql php7.0-curl php7.0-mbstring -y
     apt-get install php7.0-intl php7.0-mcrypt php-imagick php7.0-xml php7.0-zip -y
 
@@ -181,7 +161,7 @@ ubuntu_18 () {
     
     curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/dev2/mysql_secure_installation_MARIADB.sh -k
     chmod +x mysql_secure_installation_MARIADB.sh
-    sh mysql_secure_installation_MARIADB.sh && rm -r mysql_secure_installation_MARIADB.sh
+    sudo sh mysql_secure_installation_MARIADB.sh && rm -r mysql_secure_installation_MARIADB.sh
 
        mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
        mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
