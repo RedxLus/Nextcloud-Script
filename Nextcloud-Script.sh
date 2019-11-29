@@ -5,11 +5,7 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
-if [ $SUDO_USER ]; then
-    real_user=$SUDO_USER
-else
-    real_user=$(whoami)
-fi
+seleccion="inicializacion"
 
 pedir_mysql_y_update () {
 
@@ -41,7 +37,6 @@ debian () {
 
    #Instalacion segura mysql. Fuente (https://bit.ly/2T09N8A)
    apt -y install expect
-   MYSQL_ROOT_PASSWORD=abcd1234
 
    SECURE_MYSQL=$(expect -c "
 
@@ -49,7 +44,7 @@ debian () {
    spawn mysql_secure_installation
 
    expect \"Enter current password for root (enter for none):\"
-   send \"$MYSQL\r\"
+   send \"$rootpasswd\r\"
 
    expect \"Change the root password?\"
    send \"n\r\"
@@ -68,8 +63,6 @@ debian () {
 
    expect eof
    ")
-
-   echo "$SECURE_MYSQL"
 
    apt -y purge expect
    apt autoremove -y
@@ -123,13 +116,11 @@ ubuntu_16 () {
     apt -y install expect
 
 
-   MYSQL_ROOT_PASSWORD=abcd1234
-
    SECURE_MYSQL=$(expect -c "
    set timeout 10
    spawn mysql_secure_installation
    expect \"Enter current password for root (enter for none):\"
-   send \"$MYSQL\r\"
+   send \"$rootpasswd\r\"
    expect \"Change the root password?\"
    send \"n\r\"
    expect \"Remove anonymous users?\"
@@ -142,8 +133,6 @@ ubuntu_16 () {
    send \"y\r\"
    expect eof
    ")
-
-   echo "$SECURE_MYSQL"
 
    apt -y purge expect
    apt autoremove -y
@@ -212,8 +201,6 @@ ubuntu_18 () {
    expect eof
    ")
 
-   echo "$SECURE_MYSQL"
-
    apt -y purge expect
    apt autoremove -y
 
@@ -243,6 +230,70 @@ ubuntu_18 () {
    menu_oc
 }
 
+centos () {
+   
+   echo ""
+   echo "Please enter root password (same as root user) to use in MySQL"
+   read rootpasswd
+
+   yum update -y
+   yum install epel-release -y
+   rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+
+   yum install httpd unzip php70w php70w-dom php70w-mbstring php70w-gd php70w-pdo php70w-json php70w-xml php70w-zip php70w-curl php70w-mcrypt php70w-pear setroubleshoot-server bzip2 sudo -y
+
+   yum install mariadb-server php70w-mysql -y
+
+   systemctl start mariadb
+   systemctl enable mariadb
+
+   yum -y install expect
+
+   MYSQL_ROOT_PASSWORD=abcd1234
+
+   SECURE_MYSQL=$(expect -c "
+   set timeout 10
+   spawn mysql_secure_installation
+   expect \"Enter current password for root (enter for none):\"
+   send \"$MYSQL\r\"
+   expect \"Change the root password?\"
+   send \"n\r\"
+   expect \"Remove anonymous users?\"
+   send \"y\r\"
+   expect \"Disallow root login remotely?\"
+   send \"y\r\"
+   expect \"Remove test database and access to it?\"
+   send \"y\r\"
+   expect \"Reload privilege tables now?\"
+   send \"y\r\"
+   expect eof
+   ")
+
+   yum remove expect -y
+   yum clean all
+
+       mysql -uroot -e "CREATE DATABASE nextcloud;"
+       mysql -uroot -e "CREATE USER 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
+       mysql -uroot -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost';"
+       mysql -uroot -e "FLUSH PRIVILEGES;"
+
+   curl -LO https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
+
+   unzip nextcloud-13.0.1.zip -d /var/www/html/
+   mkdir /var/www/html/nextcloud/data && cd /var/www/html && chown -R apache:apache nextcloud
+
+   cd /etc/httpd/conf.d && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
+
+   systemctl start httpd
+   systemctl enable httpd
+
+   cd /var/www/html/nextcloud && sudo -u apache php occ maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd"
+
+   #Menu 1 (ip)
+   yum install net-tools -y
+   curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/ip-config.php.sh -k && sh ip-config.php.sh && rm -r ip-config.php.sh
+}
+
 ip_config () {
    apt-get install net-tools
    laip=$(ifconfig|awk 'NR == 2'|awk '{print $2}'|cut -d ':' -f2)
@@ -269,9 +320,9 @@ menu_oc () {
    echo "1. Si. Me gustaria la instalacion automatica de OcDownloader." 
    echo "2. No. Gracias. Salir" 
    echo -n "Seleccione una opcion [1 - 2]"
-     read seleccion
+     read seleccion_oc
 
-     case $seleccion in
+     case $seleccion_oc in
         1)
            echo "Instalando y activando"
            instalar_oc
@@ -300,41 +351,51 @@ instalar_oc () {
    cd /var/www/html/nextcloud  && sudo -u www-data php occ app:enable ocdownloader
 }
 
-clear
-echo ""
-echo "Comprobacion previa. Este es tu sistema Operativo:"
-cat  /etc/issue
-echo "Ahora escribe el numero correspondiente para comenzar la instalacion automatica de Nextcloud:" 
-echo ""
-echo "1. UBUNTU 16"
-echo "2. UBUNTU 18" 
-echo "3. DEBIAN" 
-echo "4. CentOS" 
-echo -n "Seleccione una opcion [1 - 4]"
-  read seleccion
-  case $seleccion in
-     1)
-        echo "Descargando y ejecutando Script para UBUNTU 16"
-        
-        ubuntu_16
-     ;;
-     2)
-        echo "Descargando y ejecutando Script para UBUNTU 18"
-        
-        ubuntu_18
-     ;;
-     3)
-        echo "Descargando y ejecutando Script para DEBIAN"
-        
-        debian
-     ;;
-     4)
-        echo "Descargando y ejecutando Script para CENTOS"
-        curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos-so/Nextcloud-Script-CENTOS.sh -k
-        chmod +x Nextcloud-Script-CENTOS.sh
-        sh Nextcloud-Script-CENTOS.sh && rm -r Nextcloud-Script-CENTOS.sh
-     ;;
-     *)
-        echo "Numero no reconocido."
-     ;;
-  esac
+until [ "$seleccion" = "5" ]; do
+   clear
+   echo ""
+   echo "Comprobacion previa. Este es tu sistema Operativo:"
+   cat  /etc/issue
+   echo "Ahora escribe el numero correspondiente para comenzar la instalacion automatica de Nextcloud:" 
+   echo ""
+   echo "1. UBUNTU 16"
+   echo "2. UBUNTU 18" 
+   echo "3. DEBIAN" 
+   echo "4. CentOS" 
+   echo "" 
+   echo "5. Salir del script. Exit." 
+   echo ""
+   echo -n "Seleccione una opcion [1 - 5]: "
+     read seleccion
+     case $seleccion in
+        1)
+           echo "Descargando y ejecutando Script para UBUNTU 16"
+
+           ubuntu_16
+        ;;
+        2)
+           echo "Descargando y ejecutando Script para UBUNTU 18"
+
+           ubuntu_18
+        ;;
+        3)
+           echo "Descargando y ejecutando Script para DEBIAN"
+
+           debian
+        ;;
+        4)
+           echo "Descargando y ejecutando Script para CENTOS"
+           curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos-so/Nextcloud-Script-CENTOS.sh -k
+           chmod +x Nextcloud-Script-CENTOS.sh
+           sh Nextcloud-Script-CENTOS.sh && rm -r Nextcloud-Script-CENTOS.sh
+        ;;
+        5)
+           echo "Saliendo ..."
+           exit
+        ;;
+        *)
+           echo "Numero no reconocido."
+           sleep 1
+        ;;
+     esac
+done
