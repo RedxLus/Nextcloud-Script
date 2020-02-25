@@ -89,7 +89,7 @@ The process is based on menus. At the beginning and the end.
   - [x]  DEBIAN  :heavy_check_mark:
   - [x]  Ubuntu 16  :heavy_check_mark:
   - [x]  Ubuntu 18  :heavy_check_mark:
-  - [x]  CentOS  (<a href="#errores">clic para ver posibles errores</a>)
+  - [x]  CentOS  (<a href="#know-bugs">click to see possible errors</a>)
 - Virtual Machines VM (**KVM**) in Proxmox: 
   - [x]  DEBIAN  :heavy_check_mark:
   - [x]  Ubuntu 16  :heavy_check_mark:
@@ -100,7 +100,7 @@ The process is based on menus. At the beginning and the end.
 
 - Windows Subsystem linux
 
-## Know Bugs
+## Know-Bugs
 
 #### CentOS
 In LXC before using the script you need:
