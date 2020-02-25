@@ -1,5 +1,5 @@
 # Nextcloud-Script
-<a href="#"><img src="https://images.emojiterra.com/twitter/v11/512px/1f1fa-1f1f8.png" alt="usa" width="5%"></a>
+<a href="#install"><img src="https://images.emojiterra.com/twitter/v11/512px/1f1fa-1f1f8.png" alt="usa" width="5%"></a>
 
 Quick Nextcloud-Script installation 
 
@@ -55,7 +55,55 @@ En LXC antes de usar el script necesita:
 ```
 yum update -y && reboot
 ```
+<br/>
+<br/>
+<br/>
+
+___
 
 
+## Install
+
+You need to run the Script with root permissions. To do this, depending on the operating system, you can do it in several ways:
+```
+sudo sh Nextcloud-Script.sh
+```
+
+Also entering directly as root user and running the script:
+```
+su
+```
+```
+sh Nextcloud-Script.sh
+```
+
+The installation takes approximately 4 minutes. Although it may vary.
+
+Version 13 is installed (for added compatibility. It can be updated from within.)
+
+The process is based on menus. At the beginning and the end.
+
+## Tested and functional
+
+- CT Virtual Machines (Linux Containers = **LXC**) in Proxmox:
+  - [x]  DEBIAN  :heavy_check_mark:
+  - [x]  Ubuntu 16  :heavy_check_mark:
+  - [x]  Ubuntu 18  :heavy_check_mark:
+  - [x]  CentOS  (<a href="#errores">clic para ver posibles errores</a>)
+- Virtual Machines VM (**KVM**) in Proxmox: 
+  - [x]  DEBIAN  :heavy_check_mark:
+  - [x]  Ubuntu 16  :heavy_check_mark:
+  - [x]  Ubuntu 18  :heavy_check_mark:
 
 
+## Still testing (not functional)
+
+- Windows Subsystem linux
+
+## Know Bugs
+
+#### CentOS
+In LXC before using the script you need:
+```
+yum update -y && reboot
+```
