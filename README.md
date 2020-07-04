@@ -49,6 +49,9 @@ The process is based on menus. At the beginning and the end.
   - [x]  DEBIAN  :heavy_check_mark:
   - [x]  Ubuntu 16  :heavy_check_mark:
   - [x]  Ubuntu 18  :heavy_check_mark:
+- Raspberry Pi OS (Buster/Jessie/Stretch):
+  - [x]  Model 4  :heavy_check_mark:
+  - [x]  Model 3  :heavy_check_mark:
 
 
 ## Still testing (not functional)
@@ -104,6 +107,9 @@ El proceso se basa en menús. Al inicio y al final.
   - [x]  DEBIAN  :heavy_check_mark:
   - [x]  Ubuntu 16  :heavy_check_mark:
   - [x]  Ubuntu 18  :heavy_check_mark:
+- Raspberry Pi OS (Buster/Jessie/Stretch):
+  - [x]  Model 4  :heavy_check_mark:
+  - [x]  Model 3  :heavy_check_mark:
 
 
 ## Aún probando (no funcionales)
