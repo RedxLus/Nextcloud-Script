@@ -21,7 +21,7 @@ pedir_mysql_y_update () {
 raspberry () {
 
    # Instalar apache, activar modulos y reiniciar
-    apt install apache2 apt-transport-https ca-certificates unzip curl aria2 -y 
+    apt install apache2 apt-transport-https ca-certificates unzip curl aria2 wget systemd -y 
     /etc/init.d/apache2 start && systemctl enable apache2 && a2enmod rewrite headers env dir mime && a2enmod ssl && a2ensite default-ssl.conf
     /etc/init.d/apache2 restart
 
