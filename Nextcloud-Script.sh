@@ -11,7 +11,7 @@ pedir_mysql_y_update () {
 
    # Pedir contraseña root para Mysql
        echo ""
-       echo "Porfavor introduzca una contraseña para configurar el usuario admin tanto en MySQL como en Nextcloud:"
+       echo "Por favor introduzca una contraseña para configurar el usuario admin tanto en MySQL como en Nextcloud:"
        read rootpasswd
        
    # Actualizar
