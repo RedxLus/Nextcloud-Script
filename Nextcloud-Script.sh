@@ -11,7 +11,7 @@ pedir_mysql_y_update () {
 
    # Pedir contraseña root para Mysql
        echo ""
-       echo "Por favor introduzca una contraseña para configurar el usuario admin tanto en MySQL como en Nextcloud:"
+       echo "Porfavor introduzca una contraseña para configurar el usuario admin tanto en MySQL como en Nextcloud:"
        read rootpasswd
        
    # Actualizar
@@ -242,22 +242,28 @@ ubuntu_18 () {
 
 centos () {
    
-   echo ""
-   echo "Por favor introduzca una contraseña para configurar el usuario admin tanto en MySQL como en Nextcloud:"
-   read rootpasswd
+    echo ""
+    echo "Porfavor introduzca una contraseña para configurar el usuario admin tanto en MySQL como en Nextcloud:"
+    read rootpasswd
 
-   yum update -y
-   yum install epel-release -y
-   rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+    yum update -y && yum -y install epel-release yum-utils unzip curl \
+                                    wget bash-completion policycoreutils-python-utils mlocate bzip2 httpd
 
-   yum install httpd unzip php70w php70w-dom php70w-mbstring php70w-gd php70w-pdo php70w-json php70w-xml php70w-zip php70w-curl php70w-mcrypt php70w-pear setroubleshoot-server bzip2 sudo -y
+    sudo yum install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
 
-   yum install mariadb-server php70w-mysql -y
+    yum update -y
 
-   systemctl start mariadb
-   systemctl enable mariadb
+    yum module disable -y php && yum module enable -y php:remi-7.4
 
-   yum -y install expect
+    dnf install -y php php-gd php-mbstring php-intl php-pecl-apcu\
+                    php-mysqlnd php-opcache php-json php-zip php-pear\
+                     gcc curl-devel php-devel zlib-devel pcre-devel make
+
+    dnf install -y mariadb mariadb-server
+    systemctl start mariadb
+    systemctl enable mariadb
+
+    yum -y install expect
 
    MYSQL_ROOT_PASSWORD=abcd1234
 
@@ -279,18 +285,17 @@ centos () {
    expect eof
    ")
 
-   yum remove expect -y
-   yum clean all
+    yum remove expect -y
+    yum clean all
 
        mysql -uroot -e "CREATE DATABASE nextcloud;"
        mysql -uroot -e "CREATE USER 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
        mysql -uroot -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost';"
        mysql -uroot -e "FLUSH PRIVILEGES;"
 
-   curl -LO https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
-
-   unzip nextcloud-13.0.1.zip -d /var/www/html/
-   mkdir /var/www/html/nextcloud/data && cd /var/www/html && chown -R apache:apache nextcloud
+    curl -LO https://download.nextcloud.com/server/releases/nextcloud-18.0.6.zip
+    unzip nextcloud-18.0.6.zip -d /var/www/html/
+    mkdir /var/www/html/nextcloud/data && cd /var/www/html && chown -R apache:apache nextcloud
 
    cd /etc/httpd/conf.d && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
 
@@ -299,9 +304,23 @@ centos () {
 
    cd /var/www/html/nextcloud && sudo -u apache php occ maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd"
 
-   #Menu 1 (ip)
-   yum install net-tools -y
-   curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/ip-config.php.sh -k && sh ip-config.php.sh && rm -r ip-config.php.sh
+    firewall-cmd --zone=public --add-service=http --permanent
+    firewall-cmd --reload
+
+    semanage fcontext -a -t httpd_sys_rw_content_t '/var/www/html/nextcloud/data(/.*)?'
+    semanage fcontext -a -t httpd_sys_rw_content_t '/var/www/html/nextcloud/config(/.*)?'
+    semanage fcontext -a -t httpd_sys_rw_content_t '/var/www/html/nextcloud/apps(/.*)?'
+    semanage fcontext -a -t httpd_sys_rw_content_t '/var/www/html/nextcloud/.htaccess'
+    semanage fcontext -a -t httpd_sys_rw_content_t '/var/www/html/nextcloud/.user.ini'
+    semanage fcontext -a -t httpd_sys_rw_content_t '/var/www/html/nextcloud/3rdparty/aws/aws-sdk-php/src/data/logs(/.*)?'
+
+    restorecon -R '/var/www/html/nextcloud/'
+
+    setsebool -P httpd_can_network_connect on
+
+    #Menu 1 (ip)
+    yum install net-tools -y
+    ip_config
 }
 
 ip_config () {
@@ -364,19 +383,19 @@ instalar_oc () {
 until [ "$seleccion" = "6" ]; do
    clear
    echo ""
-   echo "Comprobacion previa. Este es tu sistema Operativo:"
+   echo "Comprobación previa. Este es tu sistema Operativo:"
    cat  /etc/issue
-   echo "Ahora escribe el numero correspondiente para comenzar la instalacion automatica de Nextcloud:" 
+   echo "Ahora escribe el número correspondiente para comenzar la instalación automática de Nextcloud:" 
    echo ""
    echo "1. UBUNTU 16"
    echo "2. UBUNTU 18" 
    echo "3. DEBIAN" 
-   echo "4. CentOS"
+   echo "4. CentOS 8"
    echo "5. Raspberry Pi OS (Buster/Jessie/Stretch)" 
    echo "" 
    echo "6. Salir del script. Exit." 
    echo ""
-   echo -n "Seleccione una opcion [1 - 6]: "
+   echo -n "Seleccione una opción [1 - 6]: "
      read seleccion
      case $seleccion in
         1)
@@ -395,10 +414,9 @@ until [ "$seleccion" = "6" ]; do
            general_debian_and_raspberry
         ;;
         4)
-           echo "Descargando y ejecutando Script para CENTOS"
-           curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos-so/Nextcloud-Script-CENTOS.sh -k
-           chmod +x Nextcloud-Script-CENTOS.sh
-           sh Nextcloud-Script-CENTOS.sh && rm -r Nextcloud-Script-CENTOS.sh
+           echo "Ejecutando Script para CENTOS"
+           
+           centos
         ;;
         5)
            echo "Ejecutando Script para Raspberry Pi OS (Buster/Jessie/Stretch)"
@@ -406,11 +424,10 @@ until [ "$seleccion" = "6" ]; do
            general_debian_and_raspberry
         ;;
         6)
-           echo "Saliendo ..."
-           echo "Si la instalación se ha realizado correctamente pruebe a acceder a:"
-           echo "https://192.168.1.39/nextcloud"
-           echo "Recuerde que se ejecuta con SSL de forma local así que puede saltar un error. Pulse sobre aceptar certificado."
-           echo "Recuerde su usuario: admin y la contraseña que ha puesto en el script. Dentro puede crear más usuarios."
+           echo "Saliendo del instalador ..."
+           echo "Recuerde si ha instalado correctamente Nextcloud puede acceder a la URL con su IP:"
+           echo "http://SUIP/nextcloud"
+           echo "Siendo el usuario: admin y la contraseña la introducida en el proceso de instalación."
            exit
         ;;
         *)
