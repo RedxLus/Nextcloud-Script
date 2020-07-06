@@ -11,26 +11,27 @@ pedir_mysql_y_update () {
 
    # Pedir contraseña root para Mysql
        echo ""
-       echo "Please enter root password (same as root user) to use in MySQL"
+       echo "Porfavor introduzca una contraseña para configurar el usuario admin tanto en MySQL como en Nextcloud:"
        read rootpasswd
        
    # Actualizar
    apt update && apt upgrade -y
 }
 
-raspberry () {
+general_debian_and_raspberry () {
 
-   # Instalar apache, activar modulos y reiniciar
+    pedir_mysql_y_update
+
+    # Instalar apache, activar modulos y reiniciar
     apt install apache2 apt-transport-https ca-certificates unzip curl aria2 wget systemd -y 
     /etc/init.d/apache2 start && systemctl enable apache2 && a2enmod rewrite headers env dir mime && a2enmod ssl && a2ensite default-ssl.conf
     /etc/init.d/apache2 restart
 
-   # Instalar php y otros
+    # Instalar php y otros
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
     getRasperryVersion=$(cat /etc/os-release | grep VERSION_CODENAME | cut -d '=' -f 2)
     echo "deb https://packages.sury.org/php/ $getRasperryVersion main" | tee /etc/apt/sources.list.d/php.list
-
-    pedir_mysql_y_update
+    apt update
     
     apt install php7.2 php-redis php7.2-cli php7.2-curl php7.2-gd php7.2-ldap php7.2-mbstring php7.2-mysql \
                   php7.2-xml php7.2-xmlrpc php7.2-zip libapache2-mod-php7.2 php7.2-json php7.2-intl php-imagick ffmpeg -y
@@ -99,89 +100,6 @@ raspberry () {
     menu_oc
 }
 
-debian () {
-
-   pedir_mysql_y_update
-
-   # Instalar apache, activar modulos y reiniciar
-   apt install apache2 -y && /etc/init.d/apache2 start && systemctl enable apache2 && a2enmod rewrite headers env dir mime && a2enmod ssl && a2ensite default-ssl.conf && /etc/init.d/apache2 restart
-
-   # Instalar php y otros
-   apt install php7.0 libapache2-mod-php7.0 php7.0-common php7.0-gd php7.0-json php7.0-mysql php7.0-curl php7.0-mbstring php7.0-intl php7.0-mcrypt php7.0-imagick php7.0-xml php7.0-zip -y
-   apt install unzip curl aria2 -y
-
-   # Instalar mysql (mariadb), reiniciar, activar y ejecutar al inicio
-   apt -y install mariadb-server
-   /etc/init.d/mysql stop && /etc/init.d/mysql start
-   systemctl enable mariadb
-   systemctl start mariadb
-
-   #Instalacion segura mysql. Fuente (https://bit.ly/2T09N8A)
-   apt -y install expect
-
-   SECURE_MYSQL=$(expect -c "
-
-   set timeout 10
-   spawn mysql_secure_installation
-
-   expect \"Enter current password for root (enter for none):\"
-   send \"$rootpasswd\r\"
-
-   expect \"Change the root password?\"
-   send \"n\r\"
-
-   expect \"Remove anonymous users?\"
-   send \"y\r\"
-
-   expect \"Disallow root login remotely?\"
-   send \"y\r\"
-
-   expect \"Remove test database and access to it?\"
-   send \"y\r\"
-
-   expect \"Reload privilege tables now?\"
-   send \"y\r\"
-
-   expect eof
-   ")
-
-   apt -y purge expect
-   apt autoremove -y
-
-   #Creacion base datos, usuario, privilegios
-       mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
-       mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
-       mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
-
-   #Descarga. Descomprimir Nextcloud. Privilegios. Elimina.
-   curl -LO https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
-   unzip nextcloud-13.0.1.zip -d /var/www/html/
-   chown -R www-data:www-data /var/www/html/nextcloud/
-   rm -r nextcloud-13.0.1.zip
-   
-
-   #Insta sudo (necesario si no esta instalado, aunque suele estarlo)
-   apt install sudo -y
-
-   # Instala Nextcloud
-   cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd"
-
-   # Archivo configuracion
-   cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
-   a2ensite nextcloud
-   systemctl restart apache2
-
-   # Redireccion SSL
-   cd /var/www/html/nextcloud && sed -i "1i <IfModule mod_rewrite.c>" .htaccess && sed -i "2i RewriteCond %{HTTPS} off" .htaccess && sed -i "3i RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]" .htaccess && sed -i "4i </IfModule>" .htaccess
-   systemctl restart apache2
-
-   #Menu 1 (ip)
-   ip_config
-   
-   #Menu 2 (ocdownloader)
-   menu_oc
-}
-
 ubuntu_16 () {
 
     pedir_mysql_y_update
@@ -247,74 +165,85 @@ ubuntu_16 () {
 
 ubuntu_18 () {
 
-   pedir_mysql_y_update
+    pedir_mysql_y_update
 
-   sudo apt-get install -y software-properties-common
-   sudo add-apt-repository ppa:ondrej/php -y
+    # Instalar apache, activar modulos y reiniciar
+    apt install apache2 apt-transport-https ca-certificates unzip curl aria2 wget systemd -y 
+    /etc/init.d/apache2 start && systemctl enable apache2 && a2enmod rewrite headers env dir mime && a2enmod ssl && a2ensite default-ssl.conf
+    /etc/init.d/apache2 restart
 
-   apt update && apt upgrade -y
+    # Instalar php y otros
+    apt install php7.2 php-redis php7.2-cli php7.2-curl php7.2-gd php7.2-ldap php7.2-mbstring php7.2-mysql \
+                  php7.2-xml php7.2-xmlrpc php7.2-zip libapache2-mod-php7.2 php7.2-json php7.2-intl php-imagick ffmpeg -y
 
-    apt-get install apache2 libapache2-mod-php7.0 bzip2 unzip curl -y
-    apt-get install php7.0-gd php7.0-json php7.0-mysql php7.0-curl php7.0-mbstring -y
-    apt-get install php7.0-intl php7.0-mcrypt php-imagick php7.0-xml php7.0-zip -y
 
-    apt-get install mariadb-server php-mysql -y
+    # Instalar mysql (mariadb), reiniciar, activar y ejecutar al inicio
+    apt -y install mariadb-server
+    /etc/init.d/mysql stop && /etc/init.d/mysql start
+    systemctl enable mariadb
+    systemctl start mariadb
 
+    # Instalacion segura mysql. Fuente (https://bit.ly/2T09N8A)
     apt -y install expect
 
-   MYSQL_ROOT_PASSWORD=abcd1234
+    SECURE_MYSQL=$(expect -c "
+    set timeout 10
+    spawn mysql_secure_installation
+    expect \"Enter current password for root (enter for none):\"
+    send \"$rootpasswd\r\"
+    expect \"Change the root password?\"
+    send \"n\r\"
+    expect \"Remove anonymous users?\"
+    send \"y\r\"
+    expect \"Disallow root login remotely?\"
+    send \"y\r\"
+    expect \"Remove test database and access to it?\"
+    send \"y\r\"
+    expect \"Reload privilege tables now?\"
+    send \"y\r\"
+    expect eof
+    ")
 
-   SECURE_MYSQL=$(expect -c "
-   set timeout 10
-   spawn mysql_secure_installation
-   expect \"Enter current password for root (enter for none):\"
-   send \"$MYSQL\r\"
-   expect \"Change the root password?\"
-   send \"n\r\"
-   expect \"Remove anonymous users?\"
-   send \"y\r\"
-   expect \"Disallow root login remotely?\"
-   send \"y\r\"
-   expect \"Remove test database and access to it?\"
-   send \"y\r\"
-   expect \"Reload privilege tables now?\"
-   send \"y\r\"
-   expect eof
-   ")
+    apt -y purge expect
+    apt autoremove -y
 
-   apt -y purge expect
-   apt autoremove -y
+    #Creacion base datos, usuario, privilegios
+        mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
+        mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
+        mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
 
-       mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
-       mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '$rootpasswd';"
-       mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
+    #Descarga. Descomprimir Nextcloud. Privilegios. Elimina.
+    curl -LO https://download.nextcloud.com/server/releases/nextcloud-18.0.6.zip
+    unzip nextcloud-18.0.6.zip -d /var/www/html/
+    chown -R www-data:www-data /var/www/html/nextcloud/
+    rm -r nextcloud-18.0.6.zip
 
+    #Insta sudo (necesario si no esta instalado, aunque suele estarlo)
+    apt install sudo -y
 
-   curl -LO https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
+    # Instala Nextcloud
+    cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd"
 
-   unzip nextcloud-13.0.1.zip -d /var/www/html/
-   chown -R www-data:www-data /var/www/html/nextcloud/
+    # Archivo configuracion
+    cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
+    a2ensite nextcloud
+    systemctl restart apache2
 
-   cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
-   a2ensite nextcloud
-   a2enmod rewrite headers env dir mime
-   a2enmod ssl && a2ensite default-ssl.conf
-   systemctl restart apache2
+    # Redireccion SSL
+    cd /var/www/html/nextcloud && sed -i "1i <IfModule mod_rewrite.c>" .htaccess && sed -i "2i RewriteCond %{HTTPS} off" .htaccess && sed -i "3i RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]" .htaccess && sed -i "4i </IfModule>" .htaccess
+    systemctl restart apache2
 
-   cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd" 
-
-   cd /var/www/html/nextcloud && sed -i "1i <IfModule mod_rewrite.c>" .htaccess && sed -i "2i RewriteCond %{HTTPS} off" .htaccess && sed -i "3i RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]" .htaccess && sed -i "4i </IfModule>" .htaccess
-   systemctl restart apache2
-
-   ip_config
-
-   menu_oc
+    #Menu 1 (ip)
+    ip_config
+   
+    #Menu 2 (ocdownloader)
+    menu_oc
 }
 
 centos () {
    
    echo ""
-   echo "Please enter root password (same as root user) to use in MySQL"
+   echo "Porfavor introduzca una contraseña para configurar el usuario admin tanto en MySQL como en Nextcloud:"
    read rootpasswd
 
    yum update -y
@@ -384,7 +313,7 @@ ip_config () {
    echo "Su IP es $laip. ¿Es correcta?. Puede modificarla despues en /var/www/html/nextcloud/config/config.php "
    echo "1. Si. Quiero añadirla automaticamente para que funcione NextCloud (la IP se añadira al archivo de configuracion)."
    echo "2. No. No es mi ip o quiero hacerlo manualmente."
-   echo -n "Seleccione una opcion [1 - 2]"
+   echo -n "Seleccione una opcion [1 - 2]: "
    read respuesta
 
    if [ $respuesta = 1 ]
@@ -400,7 +329,7 @@ menu_oc () {
    echo "¿Desea Instalar OcDownloader (plugin para Nextcloud)?"
    echo "1. Si. Me gustaria la instalacion automatica de OcDownloader." 
    echo "2. No. Gracias. Salir" 
-   echo -n "Seleccione una opcion [1 - 2]"
+   echo -n "Seleccione una opcion [1 - 2]: "
      read seleccion_oc
 
      case $seleccion_oc in
@@ -451,19 +380,19 @@ until [ "$seleccion" = "6" ]; do
      read seleccion
      case $seleccion in
         1)
-           echo "Descargando y ejecutando Script para UBUNTU 16"
+           echo "Ejecutando Script para UBUNTU 16"
 
            ubuntu_16
         ;;
         2)
-           echo "Descargando y ejecutando Script para UBUNTU 18"
+           echo "Ejecutando Script para UBUNTU 18"
 
            ubuntu_18
         ;;
         3)
-           echo "Descargando y ejecutando Script para DEBIAN"
+           echo "Ejecutando Script para DEBIAN"
 
-           debian
+           general_debian_and_raspberry
         ;;
         4)
            echo "Descargando y ejecutando Script para CENTOS"
@@ -472,9 +401,9 @@ until [ "$seleccion" = "6" ]; do
            sh Nextcloud-Script-CENTOS.sh && rm -r Nextcloud-Script-CENTOS.sh
         ;;
         5)
-           echo "Descargando y ejecutando Script para Raspberry Pi OS (Buster/Jessie/Stretch)"
+           echo "Ejecutando Script para Raspberry Pi OS (Buster/Jessie/Stretch)"
            
-           raspberry
+           general_debian_and_raspberry
         ;;
         6)
            echo "Saliendo ..."
