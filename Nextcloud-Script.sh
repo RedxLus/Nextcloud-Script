@@ -407,10 +407,14 @@ until [ "$seleccion" = "6" ]; do
         ;;
         6)
            echo "Saliendo ..."
+           echo "Si la instalación se ha realizado correctamente pruebe a acceder a:"
+           echo "https://192.168.1.39/nextcloud"
+           echo "Recuerde que se ejecuta con SSL de forma local así que puede saltar un error. Pulse sobre aceptar certificado."
+           echo "Recuerde su usuario: admin y la contraseña que ha puesto en el script. Dentro puede crear más usuarios."
            exit
         ;;
         *)
-           echo "Numero no reconocido."
+           echo "Número no reconocido."
            sleep 1
         ;;
      esac
