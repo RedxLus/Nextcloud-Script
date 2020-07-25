@@ -116,7 +116,7 @@ En LXC antes de usar el script necesita:
 yum update -y && reboot
 ```
 
-### Inicio sesión
+## Inicio sesión
 
 Una vez instalado tan solo tiene que ir a cualquier navegador dentro de la misma red y entrar en la URL:
 https://LA-IP-DE-LA-MAQUINA/nextcloud (en la página https://LA-IP-DE-LA-MAQUINA/ puede comprobar que se ha instalado correctamente Apache).
