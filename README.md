@@ -56,6 +56,20 @@ In LXC before using the script you need:
 yum update -y && reboot
 ```
 
+## Login
+
+Once installed, just go to any browser within the same network and enter the URL:
+https://THE-IP-OF-THE-MACHINE/nextcloud (on page https://THE-IP-OF-THE-MACHINE/ can verify that Apache has been installed correctly).
+
+Once we see the input menu, the login data is as follows:
+Nextcloud administrator user: admin
+Nextcloud administrator user password: The one entered in the script
+
+Also if we want to manage the database within the machine, the data is as follows:
+MYSQL database administrator user: root
+MYSQL database administrator user password: The one entered in the script
+Database name: nextcloud
+
 ___
 
 ## Instalación
@@ -101,6 +115,21 @@ En LXC antes de usar el script necesita:
 ```
 yum update -y && reboot
 ```
+
+### Inicio sesión
+
+Una vez instalado tan solo tiene que ir a cualquier navegador dentro de la misma red y entrar en la URL:
+https://LA-IP-DE-LA-MAQUINA/nextcloud (en la página https://LA-IP-DE-LA-MAQUINA/ puede comprobar que se ha instalado correctamente Apache).
+
+Una vez veamos el menú de entrada los datos de inicio de sesión son los siguientes:
+Usuario administrador Nextcloud: admin
+Contraseña usuario administrador Nextcloud: La que haya introducido en el script
+
+Tambien si queremos gestionar la base de datos dentro de la máquina los datos son los seiguientes:
+Usuario administrador de la base de datos MYSQL: root
+Contraseña usuario administrador de la base de datos MYSQL: La que haya introducido en el script
+Nombre base de datos: nextcloud
+
 <br/>
 <br/>
 <br/>
