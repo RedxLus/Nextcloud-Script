@@ -14,29 +14,19 @@ ___
 
 ## Install
 
-First clone this repo:
 ```
+# First clone this repo:
 git clone https://github.com/RedxLus/Nextcloud-Script.git
-```
 
-You need to run the Script with root permissions. To do this, depending on the operating system, you can do it in several ways:
-```
-sudo sh Nextcloud-Script.sh
-```
-
-Also entering directly as root user and running the script:
-```
-su
-```
-```
-sh Nextcloud-Script.sh
+# You need to run the Script with root permissions. To do this, depending on the operating system, you can do it in several ways:
+sudo bash Nextcloud-Script/Nextcloud-Script.sh
 ```
 
 The installation takes approximately 4 minutes. Although it may vary.
 
-Version 13 is installed (for added compatibility. It can be updated from within.)
+Version 18 is installed (for added compatibility. It can be updated from within.)
 
-The process is based on menus. At the beginning and the end.
+The process is based on menus. At the beginning and the end. When the installation is complete it will take you to the start menu and just press exit.
 
 ## Tested and functional
 
@@ -70,31 +60,19 @@ ___
 
 ## Instalación
 
-Primero clona este repositorio:
 ```
+# Primero clona este repositorio:
 git clone https://github.com/RedxLus/Nextcloud-Script.git
-```
 
-Necesita ejecutar el Script con permisos root. Para ello, según el sistema operativo, puede hacerlo de varias formas:
-
-```
-sudo sh Nextcloud-Script.sh
-```
-
-También entrando directamente como usuario root y ejecutando el script:
-
-```
-su
-```
-```
-sh Nextcloud-Script.sh
+# Necesita ejecutar el Script con permisos root. Para ello, según el sistema operativo, puede hacerlo de varias formas:
+sudo bash Nextcloud-Script/Nextcloud-Script.sh
 ```
 
 La instalación dura aproximadamente 4 minutos. Aunque puede variar.
 
-Se instala la versión 13 (para mayor compatibilidad. Se puede actualizar desde dentro.)
+Se instala la versión 18 (para mayor compatibilidad. Se puede actualizar desde dentro.)
 
-El proceso se basa en menús. Al inicio y al final. 
+El proceso se basa en menús. Al inicio y al final. Cuando se complete la instalación, lo llevará al menú de inicio y simplemente presione salir.
 
 ## Probado y funcional
 
