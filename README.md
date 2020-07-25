@@ -1,9 +1,9 @@
 # Nextcloud-Script
-<a href="#install"><img src="https://images.emojiterra.com/twitter/v11/512px/1f1fa-1f1f8.png" alt="usa" width="5%"></a>
+<a href="#install"><img src="https://images.emojiterra.com/twitter/v11/512px/1f1fa-1f1f8.png" alt="usa" width="5%"> Press to go</a>
 
 Quick Nextcloud-Script installation 
 
-<a href="#instalación"><img src="https://images.emojiterra.com/twitter/v11/128px/1f1ea-1f1f8.png" alt="spanish" width="5%"></a>
+<a href="#instalación"><img src="https://images.emojiterra.com/twitter/v11/128px/1f1ea-1f1f8.png" alt="spanish" width="5%"> Pulsa para ir</a>
 
 Script de instalación rápida de Nextcloud<br>
 
