@@ -1,8 +1,13 @@
 #!/bin/bash
 
+phpversion="7.2"
+nextcloudversion="18.0.6"
+seleccion="inicializada"
+
 if ! [ $(id -u) = 0 ]; then
-   echo "The script need to be run as root." >&2
-   exit 1
+    echo "El script debe ejecutarse como root." >&2
+    echo "The script need to be run as root." >&2
+    exit 1
 fi
 
 inicio () {
@@ -60,35 +65,31 @@ es () {
             1)
             echo "Ejecutando Script para UBUNTU 16"
 
-            ubuntu_16
+                ubuntu_16
             ;;
             2)
             echo "Ejecutando Script para UBUNTU 18"
 
-            ubuntu_18
+                ubuntu_18
             ;;
             3)
             echo "Ejecutando Script para DEBIAN"
 
-            general_debian_and_raspberry
+                general_debian_and_raspberry
             ;;
             4)
             echo "Ejecutando Script para CENTOS"
            
-            centos
+                centos
             ;;
             5)
             echo "Ejecutando Script para Raspberry Pi OS (Buster/Jessie/Stretch)"
            
-            general_debian_and_raspberry
+                general_debian_and_raspberry
             ;;
             6)
             echo ""
-            echo "Saliendo del instalador ..."
-            echo "Recuerde si ha instalado correctamente Nextcloud puede acceder a la URL con su IP:"
-            echo "https://SUIP/nextcloud"
-            echo "Siendo el usuario: admin y la contraseña la introducida en el proceso de instalación."
-            exit
+                mensaje_final
             ;;
             *)
             echo "Número no reconocido."
@@ -96,6 +97,15 @@ es () {
             ;;
         esac
     done
+}
+
+mensaje_final () {
+
+    echo "Saliendo del instalador ..."
+    echo "Recuerde si ha instalado correctamente Nextcloud puede acceder a la URL con su IP:"
+    echo "https://SUIP/nextcloud"
+    echo "Siendo el usuario: admin y la contraseña la introducida en el proceso de instalación."
+    exit
 }
 
 en () {
@@ -123,35 +133,31 @@ en () {
             1)
             echo "Running Script for UBUNTU 16"
 
-            ubuntu_16
+                ubuntu_16
             ;;
             2)
             echo "Running Script for UBUNTU 18"
 
-            ubuntu_18
+                ubuntu_18
             ;;
             3)
             echo "Running Script for DEBIAN"
 
-            general_debian_and_raspberry
+                general_debian_and_raspberry
             ;;
             4)
             echo "Running Script for CENTOS"
            
-            centos
+                centos
             ;;
             5)
             echo "Running Script for Raspberry Pi OS (Buster/Jessie/Stretch)"
            
-            general_debian_and_raspberry
+                general_debian_and_raspberry
             ;;
             6)
             echo ""
-            echo "Exiting the installer ..."
-            echo "Remember if you have successfully installed Nextcloud you can access the URL with your IP:"
-            echo "https://YOURIP/nextcloud"
-            echo "Being the user: admin and the password entered in the installation process."
-            exit
+                end_message
             ;;
             *)
             echo "Unrecognized number."
@@ -159,6 +165,16 @@ en () {
             ;;
         esac
     done
+}
+
+end_message () {
+
+    echo "Exiting the installer ..."
+    echo "Remember if you have successfully installed Nextcloud you can access the URL with your IP:"
+    echo "https://YOURIP/nextcloud"
+    echo "Being the user: admin and the password entered in the installation process."
+
+    exit
 }
 
 pedir_mysql_y_update () {
@@ -183,7 +199,12 @@ pedir_mysql_y_update () {
 
 general_debian_and_raspberry () {
 
-    pedir_mysql_y_update
+    if [ -z ${rootpasswd} ]
+    then
+        pedir_mysql_y_update
+    else
+        apt update && apt upgrade -y
+    fi
 
     # Instalar apache, activar modulos y reiniciar
     # Install apache, activate modules and restart
@@ -209,7 +230,7 @@ general_debian_and_raspberry () {
         systemctl enable mariadb
         systemctl start mariadb
 
-    # Instalacion segura mysql. Fuente (https://bit.ly/2T09N8A)
+    # Instalación segura mysql. Fuente (https://bit.ly/2T09N8A)
     # Secure mysql installation. Source (https://bit.ly/2T09N8A)
         apt -y install expect
 
@@ -234,7 +255,7 @@ general_debian_and_raspberry () {
         apt -y purge expect
         apt autoremove -y
 
-    # Creacion base datos, usuario, privilegios
+    # Creación base datos, usuario, privilegios
     # Database creation, user, privileges
         mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
         mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '${rootpasswd}';"
@@ -268,14 +289,16 @@ general_debian_and_raspberry () {
 
     # Menu 1 (ip)
         ip_config
-   
-    # Menu 2 (ocdownloader)
-        menu_oc
 }
 
 ubuntu_16 () {
 
-    pedir_mysql_y_update
+    if [ -z ${rootpasswd} ]
+    then
+        pedir_mysql_y_update
+    else
+        apt update && apt upgrade -y
+    fi
 
     apt-get install apache2 libapache2-mod-php7.0 bzip2 unzip curl -y
     apt-get install php7.0-gd php7.0-json php7.0-mysql php7.0-curl php7.0-mbstring -y
@@ -331,101 +354,118 @@ ubuntu_16 () {
    cd /var/www/html/nextcloud && sed -i "1i <IfModule mod_rewrite.c>" .htaccess && sed -i "2i RewriteCond %{HTTPS} off" .htaccess && sed -i "3i RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]" .htaccess && sed -i "4i </IfModule>" .htaccess
    systemctl restart apache2
 
-   ip_config
+    ip_config
 
-   menu_oc
 }
 
 ubuntu_18 () {
 
-    pedir_mysql_y_update
+    if [ -z ${rootpasswd} ]
+    then
+        pedir_mysql_y_update
+    else
+        apt update && apt upgrade -y
+    fi
 
     # Instalar apache, activar modulos y reiniciar
-    apt install apache2 apt-transport-https ca-certificates unzip curl aria2 wget systemd -y 
-    /etc/init.d/apache2 start && systemctl enable apache2 && a2enmod rewrite headers env dir mime && a2enmod ssl && a2ensite default-ssl.conf
-    /etc/init.d/apache2 restart
+    # Install apache, activate modules and restart
+        apt install apache2 apt-transport-https ca-certificates unzip curl aria2 wget systemd -y 
+        /etc/init.d/apache2 start && systemctl enable apache2 && a2enmod rewrite headers env dir mime && a2enmod ssl && a2ensite default-ssl.conf
+        /etc/init.d/apache2 restart
 
-    # Instalar php y otros
-    apt install php7.2 php-redis php7.2-cli php7.2-curl php7.2-gd php7.2-ldap php7.2-mbstring php7.2-mysql \
+    # Instalar PHP y otros
+    # Install PHP and others
+        apt install php7.2 php-redis php7.2-cli php7.2-curl php7.2-gd php7.2-ldap php7.2-mbstring php7.2-mysql \
                   php7.2-xml php7.2-xmlrpc php7.2-zip libapache2-mod-php7.2 php7.2-json php7.2-intl php-imagick ffmpeg -y
 
 
     # Instalar mysql (mariadb), reiniciar, activar y ejecutar al inicio
-    apt -y install mariadb-server
-    /etc/init.d/mysql stop && /etc/init.d/mysql start
-    systemctl enable mariadb
-    systemctl start mariadb
+    # Install mysql (mariadb), restart, activate and run at startup
+        apt -y install mariadb-server
+        /etc/init.d/mysql stop && /etc/init.d/mysql start
+        systemctl enable mariadb
+        systemctl start mariadb
 
-    # Instalacion segura mysql. Fuente (https://bit.ly/2T09N8A)
-    apt -y install expect
+    # Instalación segura mysql. Fuente (https://bit.ly/2T09N8A)
+    # Secure mysql installation. Source (https://bit.ly/2T09N8A)
+        apt -y install expect
 
-    SECURE_MYSQL=$(expect -c "
-    set timeout 10
-    spawn mysql_secure_installation
-    expect \"Enter current password for root (enter for none):\"
-    send \"${rootpasswd}\r\"
-    expect \"Change the root password?\"
-    send \"n\r\"
-    expect \"Remove anonymous users?\"
-    send \"y\r\"
-    expect \"Disallow root login remotely?\"
-    send \"y\r\"
-    expect \"Remove test database and access to it?\"
-    send \"y\r\"
-    expect \"Reload privilege tables now?\"
-    send \"y\r\"
-    expect eof
-    ")
+        SECURE_MYSQL=$(expect -c "
+        set timeout 10
+        spawn mysql_secure_installation
+        expect \"Enter current password for root (enter for none):\"
+        send \"${rootpasswd}\r\"
+        expect \"Change the root password?\"
+        send \"n\r\"
+        expect \"Remove anonymous users?\"
+        send \"y\r\"
+        expect \"Disallow root login remotely?\"
+        send \"y\r\"
+        expect \"Remove test database and access to it?\"
+        send \"y\r\"
+        expect \"Reload privilege tables now?\"
+        send \"y\r\"
+        expect eof
+        ")
 
-    apt -y purge expect
-    apt autoremove -y
+        apt -y purge expect
+        apt autoremove -y
 
-    #Creacion base datos, usuario, privilegios
+    # Creación base datos, usuario, privilegios
+    # Database creation, user, privileges
         mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
         mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '${rootpasswd}';"
         mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
 
-    #Descarga. Descomprimir Nextcloud. Privilegios. Elimina.
-    curl -LO https://download.nextcloud.com/server/releases/nextcloud-${nextcloudversion}.zip
-    unzip nextcloud-${nextcloudversion}.zip -d /var/www/html/
-    chown -R www-data:www-data /var/www/html/nextcloud/
-    rm -r nextcloud-${nextcloudversion}.zip
+    # Descarga. Descomprimir Nextcloud. Privilegios. Elimina.
+    # Download. Unzip Nextcloud. Privileges. Eliminate.
+        curl -LO https://download.nextcloud.com/server/releases/nextcloud-${nextcloudversion}.zip
+        unzip nextcloud-${nextcloudversion}.zip -d /var/www/html/
+        chown -R www-data:www-data /var/www/html/nextcloud/
+        rm -r nextcloud-${nextcloudversion}.zip
 
-    #Insta sudo (necesario si no esta instalado, aunque suele estarlo)
-    apt install sudo -y
+    # Instala sudo (necesario si no esta instalado, aunque suele estarlo)
+    # Install sudo (necessary if it is not installed, although it usually is)
+        apt install sudo -y
 
     # Instala Nextcloud
-    cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "$rootpasswd" --admin-user "admin" --admin-pass "$rootpasswd"
+    # Install Nextcloud
+        cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "${rootpasswd}" --admin-user "admin" --admin-pass "${rootpasswd}"
 
     # Archivo configuracion
-    cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
-    a2ensite nextcloud
-    systemctl restart apache2
+    # Configuration file
+        cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
+        a2ensite nextcloud
+        systemctl restart apache2
 
     # Redireccion SSL
-    cd /var/www/html/nextcloud && sed -i "1i <IfModule mod_rewrite.c>" .htaccess && sed -i "2i RewriteCond %{HTTPS} off" .htaccess && sed -i "3i RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]" .htaccess && sed -i "4i </IfModule>" .htaccess
-    systemctl restart apache2
+    # SSL redirect
+        cd /var/www/html/nextcloud && sed -i "1i <IfModule mod_rewrite.c>" .htaccess && sed -i "2i RewriteCond %{HTTPS} off" .htaccess && sed -i "3i RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]" .htaccess && sed -i "4i </IfModule>" .htaccess
+        systemctl restart apache2
 
-    #Menu 1 (ip)
-    ip_config
-   
-    #Menu 2 (ocdownloader)
-    menu_oc
+    # Menu 1 (ip)
+        ip_config
+
 }
 
 centos () {
 
-    if [[ "${idioma}" == "ES" ]]
+    if [ -z ${rootpasswd} ]
     then
-        # Pedir contraseña para el usuario root para Mysql y la misma para el usuario admin para Nextcloud
-        echo ""
-        echo "Por favor introduzca una contraseña para configurar el usuario admin para Nextcloud y el usuario root para MySQL:"
-        read rootpasswd
+        if [[ "${idioma}" == "ES" ]]
+        then
+            # Pedir contraseña para el usuario root para Mysql y la misma para el usuario admin para Nextcloud
+            echo ""
+            echo "Por favor introduzca una contraseña para configurar el usuario admin para Nextcloud y el usuario root para MySQL:"
+            read rootpasswd
+        else
+            # Ask for password for the root user for Mysql and the same for the admin user for Nextcloud
+            echo ""
+            echo "Please enter a password to configure the admin user for Nextcloud and the root user for MySQL:"
+            read rootpasswd
+        fi
     else
-        # Ask for password for the root user for Mysql and the same for the admin user for Nextcloud
-        echo ""
-        echo "Please enter a password to configure the admin user for Nextcloud and the root user for MySQL:"
-        read rootpasswd
+        apt update && apt upgrade -y
     fi
 
     yum update -y && yum -y install epel-release yum-utils unzip curl \
@@ -437,8 +477,8 @@ centos () {
 
     yum module disable -y php && yum module enable -y php:remi-7.4
 
-    dnf install -y php php-gd php-mbstring php-intl php-pecl-apcu\
-                    php-mysqlnd php-opcache php-json php-zip php-pear\
+    dnf install -y php php-gd php-mbstring php-intl php-pecl-apcu \
+                    php-mysqlnd php-opcache php-json php-zip php-pear \
                      gcc curl-devel php-devel zlib-devel pcre-devel make
 
     dnf install -y mariadb mariadb-server
@@ -508,84 +548,212 @@ centos () {
 ip_config () {
 
     apt-get install net-tools
-    laip=$(ifconfig|awk 'NR == 2'|awk '{print $2}'|cut -d ':' -f2)
 
     clear
 
-    if [[ "${idioma}" == "ES" ]]
+    if [ -z ${laip} ]
     then
-        echo "Su IP es ${laip}. ¿Es correcta?. Puede modificarla despues en /var/www/html/nextcloud/config/config.php "
-        echo "1. Sí. Quiero añadirla automaticamente para que funcione NextCloud (la IP se añadira al archivo de configuracion)."
-        echo "2. No. No es mi ip o quiero hacerlo manualmente."
-        echo -n "Seleccione una opción [1 - 2]: "
-        read respuesta
-    else
-        echo "Your IP is ${laip}. It's correct?. You can modify it later in /var/www/html/nextcloud/config/config.php "
-        echo "1. Yes. I want to add it automatically for NextCloud to work (the IP will be added to the configuration file)."
-        echo "2. No. It is not my ip or I want to do it manually."
-        echo -n "Select an option [1 - 2]: "
-        read respuesta
-    fi
+        
+        laip=$(ifconfig|awk 'NR == 2'|awk '{print $2}'|cut -d ':' -f2)
+
+        if [[ "${idioma}" == "ES" ]]
+        then
+            echo "Su IP es ${laip}. ¿Es correcta?. Puede modificarla despues en /var/www/html/nextcloud/config/config.php "
+            echo "1. Sí. Quiero añadirla automaticamente para que funcione NextCloud (la IP se añadira al archivo de configuracion)."
+            echo "2. No. No es mi IP pero quiero escribirla ahora."
+            echo "3. No. No es mi IP pero quiero hacerlo manualmente en otro momento. Exit."
+            echo -n "Seleccione una opción [1 - 3]: "
+            read respuesta
+        else
+            echo "Your IP is ${laip}. It's correct?. You can modify it later in /var/www/html/nextcloud/config/config.php "
+            echo "1. Yes. I want to add it automatically for NextCloud to work (the IP will be added to the configuration file)."
+            echo "2. No. It is not my IP but I want to write it now."
+            echo "3. No. It is not my IP but I want to do it manually at another time. Exit."
+            echo -n "Select an option [1 - 3]: "
+            read respuesta
+        fi
 
 
-    if [ ${respuesta} = 1 ]
-    then
-        cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php && echo "Todo correcto / All right"
+        if [ ${respuesta} = 1 ]
+        then
+            cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php 
+            echo "Todo correcto / All right"
+
+            elif [ ${respuesta} = 2 ]
+            then
+                if [[ "${idioma}" == "ES" ]]
+                then
+                    echo -n "Introduzca la IP de esta máquina: "
+                    read laip
+                    cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php
+                else
+                    echo -n "Enter the IP of this machine: "
+                    read laip
+                    cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php   
+                fi
+            elif [ ${respuesta} = 3 ]
+            then
+                echo "Saliendo / Exit"
+        fi
     else
-        echo "Saliendo / Exit"
+        cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php
     fi
 }
 
-menu_oc () {
+error_headless () {
+
+    echo ""
+    echo ""
+    echo "Ha ejecutado el script en modo headless pero ha ocurrido algun fallo."
+    echo "Recuerde la estructura:"
+    echo ""
+    echo "Primero el comando: sudo bash Nextcloud-Script/Nextcloud-Script.sh"
+    echo "Un espacio en blanco seguido del idioma, entre los que puede ser ESPAÑOL indicando ES o INGLÉS indicando EN"
+    echo "Por lo tanto quedaría así para por ejemplo ESPAÑOL :"
+    echo " sudo bash Nextcloud-Script/Nextcloud-Script.sh ES"
+    echo ""
+    echo ""
+    echo "Un espacio en blanco seguido del sistema operativo, entre los que puede ser ubuntu16, ubuntu18, debian, centos o raspberry."
+    echo "Por lo tanto quedaría así para por ejemplo ESPAÑOL y Ubuntu 18 (Cambie ubuntu18 por su sistema operativo) :"
+    echo " sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu18"
+    echo ""
+    echo ""
+    echo "Un espacio en blanco seguido de la contraseña para el usuario admin de Nextcloud y el usuario root de MYSQL."
+    echo "Por lo tanto quedaría así para por ejemplo ESPAÑOL, Ubuntu 18 y la contraseña NotiCk:"
+    echo " sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu18 NotiCk"
+    echo ""
+    echo ""
+    echo "Por último, un espacio en blanco seguido de la IP de la máquina."
+    echo "Por lo tanto quedaría así para por ejemplo ESPAÑOL, Ubuntu 18, la contraseña NotiCk y la IP 192.168.1.14:"
+    echo " sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu18 NotiCk 192.168.1.14"
+    echo ""
+    echo ""
+}
 
 
-    if [[ "${idioma}" == "ES" ]]
-    then
+if [ ${#} -eq 0 ]
+then
+
+    # Inicio normal sin argumentos. Basado en menús
+    # Normal start without arguments. Menu-based
+    inicio
+
+elif [ ${#} -eq 4 ]
+then
+
+    if [ ${1} == "ES" ]
+    then 
+        idioma="ES"
         echo ""
-        echo "¿Desea Instalar OcDownloader (plugin para Nextcloud)?"
-        echo "1. Sí. Me gustaria la instalacion automatica de OcDownloader." 
-        echo "2. No. Gracias. Salir" 
-        echo -n "Seleccione una opción [1 - 2]: "
-        read seleccion_oc
-    else
+        echo "Instalando en modo headless con los siguientes parámetros:"
+        echo "IDIOMA: ${1}"
+        echo "SISTEMA OPERATIVO: ${2}"
+        echo "CONTRASEÑA NEXTCLOUD Y MYSQL: ${3}"
+            rootpasswd="${3}"
+        echo "IP DE ESTA MÁQUINA: ${4}"
+            laip="${4}"
         echo ""
-        echo "Do you want to Install OcDownloader (plugin for Nextcloud)?"
-        echo "1. Yes. I would like the automatic installation of OcDownloader." 
-        echo "2. No thanks. Exit" 
-        echo -n "Select an option [1 - 2]: "
-        read seleccion_oc
-    fi
-
-    if [ ${seleccion_oc} = 1 ]
-    then
-        echo "Instalando y activando / Installing and activating"
-        instalar_oc
+        sleep 3
     else
-        echo "Saliendo / Exit"
+        idioma="EN"
+        echo ""
+        echo "Installing in headless mode with the following parameters:"
+        echo "LANGUAGE: ${1}"
+        echo "OPERATING SYSTEM: ${2}"
+        echo "PASSWORD NEXTCLOUD Y MYSQL: ${3}"
+            rootpasswd="${3}"
+        echo "IP OF THIS MACHINE: ${4}"
+            laip="${4}"
+        echo ""
+        sleep 3
     fi
-}
 
-instalar_oc () {
+    case ${2} in
+            ubuntu16)
+                if [ ${idioma} == "ES" ]
+                then
+                    echo "Ejecutando Script para UBUNTU 18"
+                        ubuntu_18
+                    echo ""
+                        mensaje_final
+                else
+                    echo "Running Script for UBUNTU 18"
+                        ubuntu_18
+                    echo ""
+                        end_message
+                fi
+            ;;
+            ubuntu18)
+                if [ ${idioma} == "ES" ]
+                then
+                    echo "Ejecutando Script para UBUNTU 18"
+                        ubuntu_18
+                    echo ""
+                        mensaje_final
 
-    apt-get install aria2 curl -y
-    mkdir /var/log/aria2c /var/local/aria2c
-    touch /var/log/aria2c/aria2c.log
-    touch /var/local/aria2c/aria2c.sess
-    chmod 770 -R /var/log/aria2c /var/local/aria2c
-    aria2c --enable-rpc --rpc-allow-origin-all -c -D --log=/var/log/aria2c/aria2c.log --check-certificate=false --save-session=/var/local/aria2c/aria2c.sess --save-session-interval=2 --continue=true --input-file=/var/local/aria2c/aria2c.sess --rpc-save-upload-metadata=true --force-save=true --log-level=warn
+                else
+                    echo "Running Script for UBUNTU 18"
+                        ubuntu_18
+                    echo ""
+                        end_message
+                fi
+            ;;
+            debian)
+                if [ ${idioma} == "ES" ]
+                then
+                    echo "Ejecutando Script para DEBIAN"
+                        general_debian_and_raspberry
+                    echo ""
+                        mensaje_final
 
-    cd /var/www/html/nextcloud/apps && curl -LO https://github.com/e-alfred/ocdownloader/releases/download/${ocversion}/ocdownloader-${ocversion}.tar.gz
-    tar -xvzf ocdownloader-${ocversion}.tar.gz
-    rm -r ocdownloader-${ocversion}.tar.gz
+                else
+                    echo "Running Script for DEBIAN"
+                        general_debian_and_raspberry
+                    echo ""
+                        end_message
+                fi   
+            ;;
+            centos)
 
-    cd /var/www/html/nextcloud  && sudo -u www-data php occ app:enable ocdownloader
-}
+                if [ ${idioma} == "ES" ]
+                then
+                    echo "Ejecutando Script para CENTOS"
+                        centos
+                    echo ""
+                        mensaje_final
 
+                else
+                    echo "Running Script for CENTOS"
+                        centos
+                    echo ""
+                        end_message
+                fi   
+            ;;
+            raspberry)
 
-phpversion="7.2"
-nextcloudversion="18.0.6"
-ocversion="1.7.8"
-seleccion="inicializada"
+                if [ ${idioma} == "ES" ]
+                then
+                    echo "Ejecutando Script para Raspberry Pi OS (Buster/Jessie/Stretch)"
+                        general_debian_and_raspberry
+                    echo ""
+                        mensaje_final
 
-
-inicio
+                else
+                    echo "Running Script for Raspberry Pi OS (Buster/Jessie/Stretch)"
+                        general_debian_and_raspberry
+                    echo ""
+                        end_message
+                fi   
+            ;;
+            *)
+                error_headless
+                sleep 2
+            ;;
+        esac
+else
+    echo ""
+    echo "Ha introducido $# en vez de 4 argumentos."
+    echo "Revise la documentación para utilizar el modo headless."
+    echo ""
+        error_headless
+fi
