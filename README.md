@@ -41,8 +41,8 @@ The process is based on menus. At the beginning and the end. When the installati
 # First clone this repo:
 git clone https://github.com/RedxLus/Nextcloud-Script.git
 
-# You need to run the Script with root permissions. To do this, depending on the operating system, you can do it in several ways:
-# You must enter the configuration variables in order.
+# You need to run the Script with root permissions. To do this, depending on the operating system, you can do it in several ways.
+# You must enter the configuration variables in order. This is a example:
 sudo bash Nextcloud-Script/Nextcloud-Script.sh EN ubuntu18 P@ssw0rd 192.168.1.14
 ```
 
@@ -143,8 +143,8 @@ El proceso se basa en menús. Al inicio y al final. Cuando se complete la instal
 # Primero clona este repositorio:
 git clone https://github.com/RedxLus/Nextcloud-Script.git
 
-# Necesita ejecutar el Script con permisos root. Para ello, según el sistema operativo, puede hacerlo de varias formas:
-# Debe introducir las variables de configuración en orden.
+# Necesita ejecutar el Script con permisos root. Para ello, según el sistema operativo, puede hacerlo de varias formas.
+# Debe introducir las variables de configuración en orden. Este seria un ejemplo:
 sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu18 P@ssw0rd 192.168.1.14
 ```
 
