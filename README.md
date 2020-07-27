@@ -82,6 +82,7 @@ ip a
   - [x]  DEBIAN  :heavy_check_mark:
   - [x]  Ubuntu 16  :heavy_check_mark:
   - [x]  Ubuntu 18  :heavy_check_mark:
+  - [x]  CentOS  :heavy_check_mark:
 - Raspberry Pi OS (Buster/Jessie/Stretch):
   - [x]  Model 4  :heavy_check_mark:
   - [x]  Model 3  :heavy_check_mark:
@@ -184,6 +185,7 @@ ip a
   - [x]  DEBIAN  :heavy_check_mark:
   - [x]  Ubuntu 16  :heavy_check_mark:
   - [x]  Ubuntu 18  :heavy_check_mark:
+  - [x]  CentOS  :heavy_check_mark:
 - Raspberry Pi OS (Buster/Jessie/Stretch):
   - [x]  Model 4  :heavy_check_mark:
   - [x]  Model 3  :heavy_check_mark:
