@@ -278,7 +278,7 @@ general_debian_and_raspberry () {
 
     # Archivo configuracion
     # Configuration file
-        cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
+        cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Files/nextcloud.conf
         a2ensite nextcloud
         systemctl restart apache2
 
@@ -342,7 +342,7 @@ ubuntu_16 () {
    unzip nextcloud-13.0.1.zip -d /var/www/html/
    chown -R www-data:www-data /var/www/html/nextcloud/
 
-   cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
+   cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Files/nextcloud.conf
    a2ensite nextcloud
    a2ensite default-ssl.conf
    a2enmod rewrite headers env dir mime
@@ -434,7 +434,7 @@ ubuntu_18 () {
 
     # Archivo configuracion
     # Configuration file
-        cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
+        cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Files/nextcloud.conf
         a2ensite nextcloud
         systemctl restart apache2
 
@@ -519,7 +519,7 @@ centos () {
     unzip nextcloud-${nextcloudversion}.zip -d /var/www/html/
     mkdir /var/www/html/nextcloud/data && cd /var/www/html && chown -R apache:apache nextcloud
 
-    cd /etc/httpd/conf.d && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Archivos/nextcloud.conf
+    cd /etc/httpd/conf.d && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Files/nextcloud.conf
 
     systemctl start httpd
     systemctl enable httpd
