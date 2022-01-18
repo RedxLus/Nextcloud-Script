@@ -1,17 +1,16 @@
 #!/bin/bash
 
-phpversion="7.2"
-nextcloudversion="18.0.6"
-seleccion="inicializada"
+seleccion="x"
 
 if ! [ $(id -u) = 0 ]; then
+    clear
     echo "El script debe ejecutarse como root." >&2
     echo "The script need to be run as root." >&2
     exit 1
 fi
 
 inicio () {
-
+    clear
     echo ""
     echo "Antes que nada, seleccione su idioma para este script:" 
     echo "First of all, select your language for this script:" 
@@ -51,43 +50,57 @@ es () {
         cat  /etc/issue
         echo "Ahora escribe el número correspondiente para comenzar la instalación automática de Nextcloud:" 
         echo ""
-        echo "1. UBUNTU 16"
-        echo "2. UBUNTU 18" 
-        echo "3. DEBIAN" 
-        echo "4. CentOS 8"
-        echo "5. Raspberry Pi OS (Buster/Jessie/Stretch)" 
-        echo "" 
-        echo "6. Salir del script. Exit." 
         echo ""
-        echo -n "Seleccione una opción [1 - 6]: "
+        echo "1. Ubuntu 20"
+        echo "2. Ubuntu 18"
+        echo "3. Ubuntu 16" 
+        echo ""
+        echo "4. Debian"
+        echo "5. Raspberry Pi OS"
+        echo ""
+        echo "6. CentOS 8"
+        echo ""
+        echo ""
+        echo "7. Salir del script. Exit." 
+        echo ""
+        echo -n "Seleccione una opción [1 - 7]: "
             read seleccion
             case ${seleccion} in
             1)
-            echo "Ejecutando Script para UBUNTU 16"
-
-                ubuntu_16
+            echo "Ejecutando Script para UBUNTU 20"
+                phpversion="7.4"
+                nextcloudversion="23.0.0"
+                ubuntu_18_and_20
             ;;
             2)
             echo "Ejecutando Script para UBUNTU 18"
-
-                ubuntu_18
+                phpversion="7.2"
+                nextcloudversion="20.0.14"
+                ubuntu_18_and_20
             ;;
             3)
-            echo "Ejecutando Script para DEBIAN"
-
-                general_debian_and_raspberry
+            echo "Ejecutando Script para UBUNTU 16"
+                phpversion="7.2"
+                nextcloudversion="18.0.0"
+                ubuntu_16
             ;;
             4)
-            echo "Ejecutando Script para CENTOS"
-           
-                centos
+            echo "Ejecutando Script para DEBIAN"
+                phpversion="7.4"
+                nextcloudversion="21.0.0"
+                general_debian_and_raspberry
             ;;
             5)
-            echo "Ejecutando Script para Raspberry Pi OS (Buster/Jessie/Stretch)"
+            echo "Ejecutando Script para Raspberry Pi OS"
            
                 general_debian_and_raspberry
             ;;
             6)
+            echo "Ejecutando Script para CENTOS"
+           
+                centos
+            ;;
+            7)
             echo ""
                 mensaje_final
             ;;
@@ -101,6 +114,7 @@ es () {
 
 mensaje_final () {
 
+    clear
     echo "Saliendo del instalador ..."
     echo "Recuerde si ha instalado correctamente Nextcloud puede acceder a la URL con su IP:"
     echo "https://SUIP/nextcloud"
@@ -119,36 +133,41 @@ en () {
         cat  /etc/issue
         echo "Now type the appropriate number to begin the automatic Nextcloud installation:" 
         echo ""
-        echo "1. UBUNTU 16"
-        echo "2. UBUNTU 18" 
-        echo "3. DEBIAN" 
-        echo "4. CentOS 8"
-        echo "5. Raspberry Pi OS (Buster/Jessie/Stretch)" 
-        echo "" 
-        echo "6. Exit the script. Exit." 
+        echo ""
+        echo "1. Ubuntu 20"
+        echo "2. Ubuntu 18"
+        echo "3. Ubuntu 16" 
+        echo ""
+        echo "4. Debian"
+        echo "5. Raspberry Pi OS"
+        echo ""
+        echo "6. CentOS 8"
+        echo ""
+        echo ""
+        echo "7. Exit the script. Exit." 
         echo ""
         echo -n "Select an option [1 - 6]: "
             read seleccion
             case ${seleccion} in
             1)
-            echo "Running Script for UBUNTU 16"
+            echo "Running Script for UBUNTU 20"
 
-                ubuntu_16
+                ubuntu_18_and_20
             ;;
             2)
             echo "Running Script for UBUNTU 18"
 
-                ubuntu_18
+                ubuntu_18_and_20
             ;;
             3)
+            echo "Running Script for UBUNTU 16"
+
+                ubuntu_16
+            ;;
+            4)
             echo "Running Script for DEBIAN"
 
                 general_debian_and_raspberry
-            ;;
-            4)
-            echo "Running Script for CENTOS"
-           
-                centos
             ;;
             5)
             echo "Running Script for Raspberry Pi OS (Buster/Jessie/Stretch)"
@@ -156,6 +175,11 @@ en () {
                 general_debian_and_raspberry
             ;;
             6)
+            echo "Running Script for CENTOS"
+           
+                centos
+            ;;
+            7)
             echo ""
                 end_message
             ;;
@@ -169,6 +193,7 @@ en () {
 
 end_message () {
 
+    clear
     echo "Exiting the installer ..."
     echo "Remember if you have successfully installed Nextcloud you can access the URL with your IP:"
     echo "https://YOURIP/nextcloud"
@@ -197,36 +222,43 @@ pedir_mysql_y_update () {
         apt update && apt upgrade -y
 }
 
-general_debian_and_raspberry () {
-
-    if [ -z ${rootpasswd} ]
-    then
-        pedir_mysql_y_update
-    else
-        apt update && apt upgrade -y
-    fi
-
+install_apache2 () {
     # Instalar apache, activar modulos y reiniciar
     # Install apache, activate modules and restart
-        apt install apache2 apt-transport-https ca-certificates unzip curl aria2 wget systemd -y 
+        apt install apache2 apt-transport-https ca-certificates unzip curl aria2 wget systemd -y
         /etc/init.d/apache2 start && systemctl enable apache2 && a2enmod rewrite headers env dir mime && a2enmod ssl && a2ensite default-ssl.conf
         /etc/init.d/apache2 restart
+}
 
+install_php () {
     # Instalar PHP y otros
     # Install PHP and others
-        wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-        getRasperryVersion=$(cat /etc/os-release | grep VERSION_CODENAME | cut -d '=' -f 2)
-        echo "deb https://packages.sury.org/php/ ${getRasperryVersion} main" | tee /etc/apt/sources.list.d/php.list
-        apt update
-    
-        apt install php7.2 php-redis php7.2-cli php7.2-curl php7.2-gd php7.2-ldap php7.2-mbstring php7.2-mysql \
-                  php7.2-xml php7.2-xmlrpc php7.2-zip libapache2-mod-php7.2 php7.2-json php7.2-intl php-imagick ffmpeg -y
+        apt install php${phpversion} \
+                    php${phpversion}-gd \
+                    php${phpversion}-mysql \
+                    php${phpversion}-curl \
+                    php${phpversion}-mbstring \
+                    php${phpversion}-intl \
+                    php${phpversion}-xml \
+                    php${phpversion}-zip \
+                    php${phpversion}-gmp \
+                    php${phpversion}-bcmath \
+                    libapache2-mod-php${phpversion} \
+                    php${phpversion}-cli \
+                    php${phpversion}-ldap \
+                    php${phpversion}-xmlrpc \
+                    php${phpversion}-json \
+                    php-redis \
+                    php-imagick \
+                    ffmpeg -y
+}
 
-
+install_mariadb () {
     # Instalar mysql (mariadb), reiniciar, activar y ejecutar al inicio
     # Install mysql (mariadb), restart, activate and run at startup
         apt -y install mariadb-server
         /etc/init.d/mysql stop && /etc/init.d/mysql start
+        /etc/init.d/mariadb stop && /etc/init.d/mariadb start
         systemctl enable mariadb
         systemctl start mariadb
 
@@ -260,7 +292,9 @@ general_debian_and_raspberry () {
         mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
         mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '${rootpasswd}';"
         mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
+}
 
+install_nextcloud () {
     # Descarga. Descomprimir Nextcloud. Privilegios. Elimina.
     # Download. Unzip Nextcloud. Privileges. Eliminate.
         curl -LO https://download.nextcloud.com/server/releases/nextcloud-${nextcloudversion}.zip
@@ -286,9 +320,45 @@ general_debian_and_raspberry () {
     # SSL redirect
         cd /var/www/html/nextcloud && sed -i "1i <IfModule mod_rewrite.c>" .htaccess && sed -i "2i RewriteCond %{HTTPS} off" .htaccess && sed -i "3i RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]" .htaccess && sed -i "4i </IfModule>" .htaccess
         systemctl restart apache2
+}
+
+general_debian_and_raspberry () {
+
+    if [ -z ${rootpasswd} ]
+    then
+        pedir_mysql_y_update
+    else
+        exit
+    fi
+
+    # Install Apache2
+        install_apache2
+
+    # Instalar PHP y otros
+    # Install PHP and others
+        wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+        getRasperryVersion=$(cat /etc/os-release | grep VERSION_CODENAME | cut -d '=' -f 2)
+        echo "deb https://packages.sury.org/php/ ${getRasperryVersion} main" | tee /etc/apt/sources.list.d/php.list
+        apt update
+    
+        install_php
+
+    # Install mysql (mariadb)
+        install_mariadb
+
+    # Install Nextcloud
+        install_nextcloud
 
     # Menu 1 (ip)
         ip_config
+
+    # Menu 2 (out)
+    if [[ "${idioma}" == "ES" ]]
+    then
+        mensaje_final
+    else
+        end_message
+    fi
 }
 
 ubuntu_16 () {
@@ -358,108 +428,37 @@ ubuntu_16 () {
 
 }
 
-ubuntu_18 () {
+ubuntu_18_and_20 () {
 
     if [ -z ${rootpasswd} ]
     then
         pedir_mysql_y_update
     else
-        apt update && apt upgrade -y
+        exit
     fi
 
-    # Instalar apache, activar modulos y reiniciar
-    # Install apache, activate modules and restart
-        apt install apache2 apt-transport-https ca-certificates unzip curl aria2 wget systemd -y 
-        /etc/init.d/apache2 start && systemctl enable apache2 && a2enmod rewrite headers env dir mime && a2enmod ssl && a2ensite default-ssl.conf
-        /etc/init.d/apache2 restart
+    # Install Apache2
+        install_apache2
 
-    # Instalar PHP y otros
-    # Install PHP and others
-        apt install php${phpversion} \
-                    php${phpversion}-gd \
-                    php${phpversion}-mysql \
-                    php${phpversion}-curl \
-                    php${phpversion}-mbstring \
-                    php${phpversion}-intl \
-                    php${phpversion}-xml \
-                    php${phpversion}-zip \
-                    php${phpversion}-gmp \
-                    php${phpversion}-bcmath \
-                    libapache2-mod-php${phpversion} \
-                    php${phpversion}-cli \
-                    php${phpversion}-ldap \
-                    php${phpversion}-xmlrpc \
-                    php${phpversion}-json \
-                    php-redis \
-                    php-imagick \
-                    ffmpeg -y
+    # Install PHP
+        install_php
 
-    # Instalar mysql (mariadb), reiniciar, activar y ejecutar al inicio
-    # Install mysql (mariadb), restart, activate and run at startup
-        apt -y install mariadb-server
-        /etc/init.d/mysql stop && /etc/init.d/mysql start
-        systemctl enable mariadb
-        systemctl start mariadb
+    # Install mysql (mariadb)
+        install_mariadb
 
-    # Instalación segura mysql. Fuente (https://bit.ly/2T09N8A)
-    # Secure mysql installation. Source (https://bit.ly/2T09N8A)
-        apt -y install expect
-
-        SECURE_MYSQL=$(expect -c "
-        set timeout 10
-        spawn mysql_secure_installation
-        expect \"Enter current password for root (enter for none):\"
-        send \"${rootpasswd}\r\"
-        expect \"Change the root password?\"
-        send \"n\r\"
-        expect \"Remove anonymous users?\"
-        send \"y\r\"
-        expect \"Disallow root login remotely?\"
-        send \"y\r\"
-        expect \"Remove test database and access to it?\"
-        send \"y\r\"
-        expect \"Reload privilege tables now?\"
-        send \"y\r\"
-        expect eof
-        ")
-
-        apt -y purge expect
-        apt autoremove -y
-
-    # Creación base datos, usuario, privilegios
-    # Database creation, user, privileges
-        mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
-        mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY '${rootpasswd}';"
-        mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
-
-    # Descarga. Descomprimir Nextcloud. Privilegios. Elimina.
-    # Download. Unzip Nextcloud. Privileges. Eliminate.
-        curl -LO https://download.nextcloud.com/server/releases/nextcloud-${nextcloudversion}.zip
-        unzip nextcloud-${nextcloudversion}.zip -d /var/www/html/
-        chown -R www-data:www-data /var/www/html/nextcloud/
-        rm -r nextcloud-${nextcloudversion}.zip
-
-    # Instala sudo (necesario si no esta instalado, aunque suele estarlo)
-    # Install sudo (necessary if it is not installed, although it usually is)
-        apt install sudo -y
-
-    # Instala Nextcloud
     # Install Nextcloud
-        cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "${rootpasswd}" --admin-user "admin" --admin-pass "${rootpasswd}"
-
-    # Archivo configuracion
-    # Configuration file
-        cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Files/nextcloud.conf
-        a2ensite nextcloud
-        systemctl restart apache2
-
-    # Redireccion SSL
-    # SSL redirect
-        cd /var/www/html/nextcloud && sed -i "1i <IfModule mod_rewrite.c>" .htaccess && sed -i "2i RewriteCond %{HTTPS} off" .htaccess && sed -i "3i RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]" .htaccess && sed -i "4i </IfModule>" .htaccess
-        systemctl restart apache2
+        install_nextcloud
 
     # Menu 1 (ip)
         ip_config
+
+    # Menu 2 (out)
+    if [[ "${idioma}" == "ES" ]]
+    then
+        mensaje_final
+    else
+        end_message
+    fi
 
 }
 
@@ -688,12 +687,12 @@ then
                 if [ ${idioma} == "ES" ]
                 then
                     echo "Ejecutando Script para UBUNTU 18"
-                        ubuntu_18
+                        ubuntu_18_and_20
                     echo ""
                         mensaje_final
                 else
                     echo "Running Script for UBUNTU 18"
-                        ubuntu_18
+                        ubuntu_18_and_20
                     echo ""
                         end_message
                 fi
@@ -702,13 +701,13 @@ then
                 if [ ${idioma} == "ES" ]
                 then
                     echo "Ejecutando Script para UBUNTU 18"
-                        ubuntu_18
+                        ubuntu_18_and_20
                     echo ""
                         mensaje_final
 
                 else
                     echo "Running Script for UBUNTU 18"
-                        ubuntu_18
+                        ubuntu_18_and_20
                     echo ""
                         end_message
                 fi
