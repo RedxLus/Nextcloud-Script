@@ -75,13 +75,13 @@ ip a
 
 - CT Virtual Machines (Linux Containers = **LXC**) in Proxmox:
   - [x]  DEBIAN  :heavy_check_mark:
-  - [x]  Ubuntu 16  :heavy_check_mark:
-  - [x]  Ubuntu 18  :heavy_check_mark:
+  - [x]  Ubuntu 16  :x: (Ubuntu 16.04 End of Life: April 30th 2021)
+  - [x]  Ubuntu 18  :heavy_check_mark: (Works with PHP 7.2 and Nextcloud 20.0.14)
   - [x]  CentOS  (<a href="#know-bugs">click to see possible errors</a>)
 - Virtual Machines VM (**KVM**) in Proxmox: 
   - [x]  DEBIAN  :heavy_check_mark:
-  - [x]  Ubuntu 16  :heavy_check_mark:
-  - [x]  Ubuntu 18  :heavy_check_mark:
+  - [x]  Ubuntu 16  :x: (Ubuntu 16.04 End of Life: April 30th 2021)
+  - [x]  Ubuntu 18  :heavy_check_mark: (Works with PHP 7.2 and Nextcloud 20.0.14)
   - [x]  CentOS  :heavy_check_mark:
 - Raspberry Pi OS (Buster/Jessie/Stretch):
   - [x]  Model 4  :heavy_check_mark:
@@ -178,13 +178,13 @@ ip a
 
 - Máquinas Virtuales CT (Linux Containers = **LXC**) en Proxmox:
   - [x]  DEBIAN  :heavy_check_mark:
-  - [x]  Ubuntu 16  :heavy_check_mark:
-  - [x]  Ubuntu 18  :heavy_check_mark:
+  - [x]  Ubuntu 16  :x: (Ubuntu 16.04 End of Life: April 30th 2021)
+  - [x]  Ubuntu 18  :heavy_check_mark: (Works with PHP 7.2 and Nextcloud 20.0.14)
   - [x]  CentOS  (<a href="#errores">clic para ver posibles errores</a>)
 - Máquinas Virtuales VM (**KVM**) en Proxmox: 
   - [x]  DEBIAN  :heavy_check_mark:
-  - [x]  Ubuntu 16  :heavy_check_mark:
-  - [x]  Ubuntu 18  :heavy_check_mark:
+  - [x]  Ubuntu 16  :x: (Ubuntu 16.04 End of Life: April 30th 2021)
+  - [x]  Ubuntu 18  :heavy_check_mark: (Works with PHP 7.2 and Nextcloud 20.0.14)
   - [x]  CentOS  :heavy_check_mark:
 - Raspberry Pi OS (Buster/Jessie/Stretch):
   - [x]  Model 4  :heavy_check_mark:
