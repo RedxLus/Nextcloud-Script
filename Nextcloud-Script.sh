@@ -375,9 +375,24 @@ ubuntu_18 () {
 
     # Instalar PHP y otros
     # Install PHP and others
-        apt install php7.2 php-redis php7.2-cli php7.2-curl php7.2-gd php7.2-ldap php7.2-mbstring php7.2-mysql \
-                  php7.2-xml php7.2-xmlrpc php7.2-zip libapache2-mod-php7.2 php7.2-json php7.2-intl php-imagick ffmpeg -y
-
+        apt install php${phpversion} \
+                    php${phpversion}-gd \
+                    php${phpversion}-mysql \
+                    php${phpversion}-curl \
+                    php${phpversion}-mbstring \
+                    php${phpversion}-intl \
+                    php${phpversion}-xml \
+                    php${phpversion}-zip \
+                    php${phpversion}-gmp \
+                    php${phpversion}-bcmath \
+                    libapache2-mod-php${phpversion} \
+                    php${phpversion}-cli \
+                    php${phpversion}-ldap \
+                    php${phpversion}-xmlrpc \
+                    php${phpversion}-json \
+                    php-redis \
+                    php-imagick \
+                    ffmpeg -y
 
     # Instalar mysql (mariadb), reiniciar, activar y ejecutar al inicio
     # Install mysql (mariadb), restart, activate and run at startup
