@@ -126,7 +126,9 @@ git clone https://github.com/RedxLus/Nextcloud-Script.git
 sudo bash Nextcloud-Script/Nextcloud-Script.sh
 ```
 
-<img src="https://github.com/RedxLus/Nextcloud-Script/blob/7535f707871127a271aca8d51cd7eec789dd5a37/Files/img/script-instalacion-nextcloud.PNG" alt="install nextcloud" width="5%">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/7535f707871127a271aca8d51cd7eec789dd5a37/Files/img/script-instalacion-nextcloud.PNG" alt="install nextcloud" width="20%">
+</p>
 
 La instalación dura aproximadamente 4 minutos. Aunque puede variar dependiendo de la velocidad de descarga.
 
