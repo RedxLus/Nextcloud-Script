@@ -70,8 +70,8 @@ case_versions (){
             ;;
             5)
             echo "Ejecutando Script para Raspberry Pi OS"
-                phpversion="7.2"
-                nextcloudversion="18.0.0"
+                phpversion="7.3"
+                nextcloudversion="23.0.0"
                 raspberry
             ;;
             6)
@@ -116,7 +116,7 @@ case_versions (){
             ;;
             5)
             echo "Running Script for Raspberry Pi OS"
-                phpversion="7.2"
+                phpversion="7.3"
                 nextcloudversion="18.0.0"
                 raspberry
             ;;
@@ -219,7 +219,7 @@ end_message () {
     exit
 }
 
-pedir_mysql_y_update () {
+ask_mysql_password () {
 
     if [[ "${idioma}" == "ES" ]]
     then
@@ -335,6 +335,7 @@ install_nextcloud () {
 
     # Redireccion SSL
     # SSL redirect
+        apt install sed -y
         cd /var/www/html/nextcloud && sed -i "1i <IfModule mod_rewrite.c>" .htaccess && sed -i "2i RewriteCond %{HTTPS} off" .htaccess && sed -i "3i RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]" .htaccess && sed -i "4i </IfModule>" .htaccess
         systemctl restart apache2
 }
@@ -398,7 +399,7 @@ debian () {
 
     if [ -z ${rootpasswd} ]
     then
-        pedir_mysql_y_update
+        ask_mysql_password
     else
         exit
     fi
@@ -431,7 +432,7 @@ raspberry () {
 
     if [ -z ${rootpasswd} ]
     then
-        pedir_mysql_y_update
+        ask_mysql_password
     else
         exit
     fi
@@ -441,10 +442,10 @@ raspberry () {
 
     # Instalar PHP y otros
     # Install PHP and others
-        wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-        getRasperryVersion=$(cat /etc/os-release | grep VERSION_CODENAME | cut -d '=' -f 2)
-        echo "deb https://packages.sury.org/php/ ${getRasperryVersion} main" | tee /etc/apt/sources.list.d/php.list
-        apt update
+        # wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+        # getRasperryVersion=$(cat /etc/os-release | grep VERSION_CODENAME | cut -d '=' -f 2)
+        # echo "deb https://packages.sury.org/php/ ${getRasperryVersion} main" | tee /etc/apt/sources.list.d/php.list
+        # apt update
     
         install_php
 
@@ -470,9 +471,9 @@ ubuntu_16 () {
 
     if [ -z ${rootpasswd} ]
     then
-        pedir_mysql_y_update
+        ask_mysql_password
     else
-        apt update && apt upgrade -y
+        exit
     fi
 
     apt-get install apache2 libapache2-mod-php7.0 bzip2 unzip curl -y
@@ -537,7 +538,7 @@ ubuntu_18_and_20 () {
 
     if [ -z ${rootpasswd} ]
     then
-        pedir_mysql_y_update
+        ask_mysql_password
     else
         exit
     fi
