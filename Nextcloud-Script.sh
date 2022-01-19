@@ -36,35 +36,13 @@ inicio () {
             echo "Unrecognized number."
             sleep 1
         ;;
-     esac
+        esac
 }
 
-es () {
+case_versions (){
 
-    idioma="ES"
-
-    until [ "${seleccion}" = "6" ]; do
-        clear
-        echo ""
-        echo "Comprobación previa. Este es tu sistema Operativo:"
-        cat  /etc/issue
-        echo "Ahora escribe el número correspondiente para comenzar la instalación automática de Nextcloud:" 
-        echo ""
-        echo ""
-        echo "1. Ubuntu 20"
-        echo "2. Ubuntu 18"
-        echo "3. Ubuntu 16" 
-        echo ""
-        echo "4. Debian"
-        echo "5. Raspberry Pi OS"
-        echo ""
-        echo "6. CentOS 8"
-        echo ""
-        echo ""
-        echo "7. Salir del script. Exit." 
-        echo ""
-        echo -n "Seleccione una opción [1 - 7]: "
-            read seleccion
+    if [[ "${idioma}" == "ES" ]]
+    then
             case ${seleccion} in
             1)
             echo "Ejecutando Script para UBUNTU 20"
@@ -92,7 +70,8 @@ es () {
             ;;
             5)
             echo "Ejecutando Script para Raspberry Pi OS"
-           
+                phpversion="7.2"
+                nextcloudversion="18.0.0"
                 raspberry
             ;;
             6)
@@ -108,46 +87,8 @@ es () {
             echo "Número no reconocido."
             sleep 1
             ;;
-        esac
-    done
-}
-
-mensaje_final () {
-
-    clear
-    echo "Saliendo del instalador ..."
-    echo "Recuerde si ha instalado correctamente Nextcloud puede acceder a la URL con su IP:"
-    echo "https://SUIP/nextcloud"
-    echo "Siendo el usuario: admin y la contraseña la introducida en el proceso de instalación."
-    exit
-}
-
-en () {
-
-    idioma="EN"
-
-    until [ "${seleccion}" = "6" ]; do
-        clear
-        echo ""
-        echo "Pre-check. This is your Operating system:"
-        cat  /etc/issue
-        echo "Now type the appropriate number to begin the automatic Nextcloud installation:" 
-        echo ""
-        echo ""
-        echo "1. Ubuntu 20"
-        echo "2. Ubuntu 18"
-        echo "3. Ubuntu 16" 
-        echo ""
-        echo "4. Debian"
-        echo "5. Raspberry Pi OS"
-        echo ""
-        echo "6. CentOS 8"
-        echo ""
-        echo ""
-        echo "7. Exit the script. Exit." 
-        echo ""
-        echo -n "Select an option [1 - 6]: "
-            read seleccion
+            esac
+    else
             case ${seleccion} in
             1)
             echo "Running Script for UBUNTU 20"
@@ -175,8 +116,8 @@ en () {
             ;;
             5)
             echo "Running Script for Raspberry Pi OS"
-                phpversion="7.4"
-                nextcloudversion="23.0.0"
+                phpversion="7.2"
+                nextcloudversion="18.0.0"
                 raspberry
             ;;
             6)
@@ -192,7 +133,78 @@ en () {
             echo "Unrecognized number."
             sleep 1
             ;;
-        esac
+            esac
+    fi
+
+}
+
+es () {
+
+    idioma="ES"
+
+    until [ "${seleccion}" = "7" ]; do
+        clear
+        echo ""
+        echo "Comprobación previa. Este es tu sistema Operativo:"
+        cat  /etc/issue
+        echo "Ahora escribe el número correspondiente para comenzar la instalación automática de Nextcloud:" 
+        echo ""
+        echo ""
+        echo "1. Ubuntu 20"
+        echo "2. Ubuntu 18"
+        echo "3. Ubuntu 16" 
+        echo ""
+        echo "4. Debian"
+        echo "5. Raspberry Pi OS"
+        echo ""
+        echo "6. CentOS 8"
+        echo ""
+        echo ""
+        echo "7. Salir del script. Exit." 
+        echo ""
+        echo -n "Seleccione una opción [1 - 7]: "
+            read seleccion
+            case_versions
+    done
+}
+
+mensaje_final () {
+
+    clear
+    echo "Saliendo del instalador ..."
+    echo "Recuerde si ha instalado correctamente Nextcloud puede acceder a la URL con su IP:"
+    echo "https://SUIP/nextcloud"
+    echo "Siendo el usuario: admin y la contraseña la introducida en el proceso de instalación."
+    exit
+}
+
+en () {
+
+    idioma="EN"
+
+    until [ "${seleccion}" = "7" ]; do
+        clear
+        echo ""
+        echo "Pre-check. This is your Operating system:"
+        cat  /etc/issue
+        echo "Now type the appropriate number to begin the automatic Nextcloud installation:" 
+        echo ""
+        echo ""
+        echo "1. Ubuntu 20"
+        echo "2. Ubuntu 18"
+        echo "3. Ubuntu 16" 
+        echo ""
+        echo "4. Debian"
+        echo "5. Raspberry Pi OS"
+        echo ""
+        echo "6. CentOS 8"
+        echo ""
+        echo ""
+        echo "7. Exit the script. Exit." 
+        echo ""
+        echo -n "Select an option [1 - 6]: "
+            read seleccion
+            case_versions
     done
 }
 
@@ -665,19 +677,19 @@ error_headless () {
     echo " sudo bash Nextcloud-Script/Nextcloud-Script.sh ES"
     echo ""
     echo ""
-    echo "Un espacio en blanco seguido del sistema operativo, entre los que puede ser ubuntu16, ubuntu18, debian, centos o raspberry."
-    echo "Por lo tanto quedaría así para por ejemplo ESPAÑOL y Ubuntu 18 (Cambie ubuntu18 por su sistema operativo) :"
-    echo " sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu18"
+    echo "Un espacio en blanco seguido del sistema operativo, entre los que puede ser ubuntu20, ubuntu18, ubuntu16, debian, centos o raspberry."
+    echo "Por lo tanto quedaría así para por ejemplo ESPAÑOL y Ubuntu 20 (Cambie ubuntu20 por su sistema operativo) :"
+    echo " sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu20"
     echo ""
     echo ""
     echo "Un espacio en blanco seguido de la contraseña para el usuario admin de Nextcloud y el usuario root de MYSQL."
-    echo "Por lo tanto quedaría así para por ejemplo ESPAÑOL, Ubuntu 18 y la contraseña NotiCk:"
-    echo " sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu18 NotiCk"
+    echo "Por lo tanto quedaría así para por ejemplo ESPAÑOL, Ubuntu 20 y la contraseña P@ssw0rd:"
+    echo " sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu20 P@ssw0rd"
     echo ""
     echo ""
     echo "Por último, un espacio en blanco seguido de la IP de la máquina."
-    echo "Por lo tanto quedaría así para por ejemplo ESPAÑOL, Ubuntu 18, la contraseña NotiCk y la IP 192.168.1.14:"
-    echo " sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu18 NotiCk 192.168.1.14"
+    echo "Por lo tanto quedaría así para por ejemplo ESPAÑOL, Ubuntu 18, la contraseña P@ssw0rd y la IP 192.168.1.14:"
+    echo " sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu20 P@ssw0rd 192.168.1.14"
     echo ""
     echo ""
 }
@@ -721,15 +733,19 @@ then
     fi
 
     case ${2} in
-            ubuntu16)
+            ubuntu20)
                 if [ ${idioma} == "ES" ]
                 then
-                    echo "Ejecutando Script para UBUNTU 18"
+                    echo "Ejecutando Script para UBUNTU 20"
+                        phpversion="7.4"
+                        nextcloudversion="23.0.0"
                         ubuntu_18_and_20
                     echo ""
                         mensaje_final
                 else
-                    echo "Running Script for UBUNTU 18"
+                    echo "Running Script for UBUNTU 20"
+                        phpversion="7.4"
+                        nextcloudversion="23.0.0"
                         ubuntu_18_and_20
                     echo ""
                         end_message
@@ -739,13 +755,36 @@ then
                 if [ ${idioma} == "ES" ]
                 then
                     echo "Ejecutando Script para UBUNTU 18"
+                        phpversion="7.2"
+                        nextcloudversion="20.0.14"
                         ubuntu_18_and_20
                     echo ""
                         mensaje_final
 
                 else
                     echo "Running Script for UBUNTU 18"
+                        phpversion="7.2"
+                        nextcloudversion="20.0.14"
                         ubuntu_18_and_20
+                    echo ""
+                        end_message
+                fi
+            ;;
+            ubuntu16)
+                if [ ${idioma} == "ES" ]
+                then
+                    echo "Ejecutando Script para UBUNTU 18"
+                        phpversion="7.2"
+                        nextcloudversion="18.0.0"
+                        ubuntu_16
+                    echo ""
+                        mensaje_final
+
+                else
+                    echo "Running Script for UBUNTU 18"
+                        phpversion="7.2"
+                        nextcloudversion="18.0.0"
+                        ubuntu_16
                     echo ""
                         end_message
                 fi
@@ -754,19 +793,18 @@ then
                 if [ ${idioma} == "ES" ]
                 then
                     echo "Ejecutando Script para DEBIAN"
-                        general_debian_and_raspberry
+                        debian
                     echo ""
                         mensaje_final
 
                 else
                     echo "Running Script for DEBIAN"
-                        general_debian_and_raspberry
+                        debian
                     echo ""
                         end_message
                 fi   
             ;;
             centos)
-
                 if [ ${idioma} == "ES" ]
                 then
                     echo "Ejecutando Script para CENTOS"
@@ -782,17 +820,16 @@ then
                 fi   
             ;;
             raspberry)
-
                 if [ ${idioma} == "ES" ]
                 then
                     echo "Ejecutando Script para Raspberry Pi OS (Buster/Jessie/Stretch)"
-                        general_debian_and_raspberry
+                        raspberry
                     echo ""
                         mensaje_final
 
                 else
                     echo "Running Script for Raspberry Pi OS (Buster/Jessie/Stretch)"
-                        general_debian_and_raspberry
+                        raspberry
                     echo ""
                         end_message
                 fi   
