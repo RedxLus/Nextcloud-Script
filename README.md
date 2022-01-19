@@ -28,11 +28,9 @@ git clone https://github.com/RedxLus/Nextcloud-Script.git
 sudo bash Nextcloud-Script/Nextcloud-Script.sh
 ```
 
-The installation takes approximately 4 minutes. Although it may vary.
+The installation takes approximately 4 minutes. Although it may vary depending on the download speed.
 
-Version 18 is installed (for added compatibility. It can be updated from within.)
-
-The process is based on menus. At the beginning and the end. When the installation is complete it will take you to the start menu and just press exit.
+The process is based on menus. At the beginning and the end. It is a process that will guide you through the menus, so in the graphic version you will only have to select the variables and Nextcloud will be configured.
 
 ### Headless mode installation
 
@@ -128,11 +126,11 @@ git clone https://github.com/RedxLus/Nextcloud-Script.git
 sudo bash Nextcloud-Script/Nextcloud-Script.sh
 ```
 
-La instalación dura aproximadamente 4 minutos. Aunque puede variar.
+<img src="https://github.com/RedxLus/Nextcloud-Script/blob/7535f707871127a271aca8d51cd7eec789dd5a37/Files/img/script-instalacion-nextcloud.PNG" alt="install nextcloud" width="5%">
 
-Se instala la versión 18 (para mayor compatibilidad. Se puede actualizar desde dentro.)
+La instalación dura aproximadamente 4 minutos. Aunque puede variar dependiendo de la velocidad de descarga.
 
-El proceso se basa en menús. Al inicio y al final. Cuando se complete la instalación, lo llevará al menú de inicio y simplemente presione salir.
+El proceso se basa en menús. Al inicio y al final. Es un proceso que le guiara entre los menus, así en la version grafica solo va a tener que seleccionar las variables y se le configurara Nextcloud
 
 ### Instalación modo headless
 
@@ -142,7 +140,7 @@ git clone https://github.com/RedxLus/Nextcloud-Script.git
 
 # Necesita ejecutar el Script con permisos root. Para ello, según el sistema operativo, puede hacerlo de varias formas.
 # Debe introducir las variables de configuración en orden. Este seria un ejemplo:
-sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu18 P@ssw0rd 192.168.1.14
+sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu20 P@ssw0rd 192.168.1.14
 ```
 
 Variables y su orden:
@@ -157,15 +155,16 @@ Variables y su orden:
 
 | Variable  | Significado |
 | ------------- | ------------- |
-| ubuntu16  | La máquina tiene el sistema operativo Ubuntu 16  |
+| ubuntu20  | La máquina tiene el sistema operativo Ubuntu 20  |
 | ubuntu18  | La máquina tiene el sistema operativo Ubuntu 18  |
+| ubuntu16  | La máquina tiene el sistema operativo Ubuntu 16  |
 | debian  | La máquina tiene el sistema operativo Debian  |
+| raspberry  | La máquina tiene el sistema operativo Raspberry OS |
 | centos  | La máquina tiene el sistema operativo CENTOS  |
-| raspberry  | La máquina tiene el sistema operativo Raspberry OS (Buster/Jessie/Stretch)  |
 
 3.  Tercero. Ponemos la contraseña para configurar el usuario admin de Nextcloud y el usuario root de MYSQL. Puede ser a elección.
 
-4. Cuarto. Ponemos la IP privada de la máquina, podemos utilizar el comando:
+4. Cuarto. Ponemos la IP privada de la máquina, podemos utilizar el comando "ip a" para verla:
 ```
 ip a
 ```
