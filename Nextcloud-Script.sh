@@ -87,13 +87,13 @@ es () {
             4)
             echo "Ejecutando Script para DEBIAN"
                 phpversion="7.4"
-                nextcloudversion="21.0.0"
-                general_debian_and_raspberry
+                nextcloudversion="23.0.0"
+                debian
             ;;
             5)
             echo "Ejecutando Script para Raspberry Pi OS"
            
-                general_debian_and_raspberry
+                raspberry
             ;;
             6)
             echo "Ejecutando Script para CENTOS"
@@ -151,28 +151,33 @@ en () {
             case ${seleccion} in
             1)
             echo "Running Script for UBUNTU 20"
-
+                phpversion="7.4"
+                nextcloudversion="23.0.0"
                 ubuntu_18_and_20
             ;;
             2)
             echo "Running Script for UBUNTU 18"
-
+                phpversion="7.2"
+                nextcloudversion="20.0.14"
                 ubuntu_18_and_20
             ;;
             3)
             echo "Running Script for UBUNTU 16"
-
+                phpversion="7.2"
+                nextcloudversion="18.0.0"
                 ubuntu_16
             ;;
             4)
             echo "Running Script for DEBIAN"
-
-                general_debian_and_raspberry
+                phpversion="7.4"
+                nextcloudversion="23.0.0"
+                debian
             ;;
             5)
-            echo "Running Script for Raspberry Pi OS (Buster/Jessie/Stretch)"
-           
-                general_debian_and_raspberry
+            echo "Running Script for Raspberry Pi OS"
+                phpversion="7.4"
+                nextcloudversion="23.0.0"
+                raspberry
             ;;
             6)
             echo "Running Script for CENTOS"
@@ -322,7 +327,95 @@ install_nextcloud () {
         systemctl restart apache2
 }
 
-general_debian_and_raspberry () {
+ip_config () {
+
+    apt-get install net-tools
+
+    clear
+
+    if [ -z ${laip} ]
+    then
+        
+        laip=$(ifconfig|awk 'NR == 2'|awk '{print $2}'|cut -d ':' -f2)
+
+        if [[ "${idioma}" == "ES" ]]
+        then
+            echo "Su IP es ${laip}. ¿Es correcta?. Puede modificarla despues en /var/www/html/nextcloud/config/config.php "
+            echo "1. Sí. Quiero añadirla automaticamente para que funcione NextCloud (la IP se añadira al archivo de configuracion)."
+            echo "2. No. No es mi IP pero quiero escribirla ahora."
+            echo "3. No. No es mi IP pero quiero hacerlo manualmente en otro momento. Exit."
+            echo -n "Seleccione una opción [1 - 3]: "
+            read respuesta
+        else
+            echo "Your IP is ${laip}. It's correct?. You can modify it later in /var/www/html/nextcloud/config/config.php "
+            echo "1. Yes. I want to add it automatically for NextCloud to work (the IP will be added to the configuration file)."
+            echo "2. No. It is not my IP but I want to write it now."
+            echo "3. No. It is not my IP but I want to do it manually at another time. Exit."
+            echo -n "Select an option [1 - 3]: "
+            read respuesta
+        fi
+
+
+        if [ ${respuesta} = 1 ]
+        then
+            cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php 
+            echo "Todo correcto / All right"
+
+            elif [ ${respuesta} = 2 ]
+            then
+                if [[ "${idioma}" == "ES" ]]
+                then
+                    echo -n "Introduzca la IP de esta máquina: "
+                    read laip
+                    cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php
+                else
+                    echo -n "Enter the IP of this machine: "
+                    read laip
+                    cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php   
+                fi
+            elif [ ${respuesta} = 3 ]
+            then
+                echo "Saliendo / Exit"
+        fi
+    else
+        cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php
+    fi
+}
+
+debian () {
+
+    if [ -z ${rootpasswd} ]
+    then
+        pedir_mysql_y_update
+    else
+        exit
+    fi
+
+    # Install Apache2
+        install_apache2
+
+    # Instalar PHP y otros  
+        install_php
+
+    # Install mysql (mariadb)
+        install_mariadb
+
+    # Install Nextcloud
+        install_nextcloud
+
+    # Menu 1 (ip)
+        ip_config
+
+    # Menu 2 (out)
+    if [[ "${idioma}" == "ES" ]]
+    then
+        mensaje_final
+    else
+        end_message
+    fi
+}
+
+raspberry () {
 
     if [ -z ${rootpasswd} ]
     then
@@ -557,61 +650,6 @@ centos () {
     # Menu 1 (ip)
     yum install net-tools -y
     ip_config
-}
-
-ip_config () {
-
-    apt-get install net-tools
-
-    clear
-
-    if [ -z ${laip} ]
-    then
-        
-        laip=$(ifconfig|awk 'NR == 2'|awk '{print $2}'|cut -d ':' -f2)
-
-        if [[ "${idioma}" == "ES" ]]
-        then
-            echo "Su IP es ${laip}. ¿Es correcta?. Puede modificarla despues en /var/www/html/nextcloud/config/config.php "
-            echo "1. Sí. Quiero añadirla automaticamente para que funcione NextCloud (la IP se añadira al archivo de configuracion)."
-            echo "2. No. No es mi IP pero quiero escribirla ahora."
-            echo "3. No. No es mi IP pero quiero hacerlo manualmente en otro momento. Exit."
-            echo -n "Seleccione una opción [1 - 3]: "
-            read respuesta
-        else
-            echo "Your IP is ${laip}. It's correct?. You can modify it later in /var/www/html/nextcloud/config/config.php "
-            echo "1. Yes. I want to add it automatically for NextCloud to work (the IP will be added to the configuration file)."
-            echo "2. No. It is not my IP but I want to write it now."
-            echo "3. No. It is not my IP but I want to do it manually at another time. Exit."
-            echo -n "Select an option [1 - 3]: "
-            read respuesta
-        fi
-
-
-        if [ ${respuesta} = 1 ]
-        then
-            cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php 
-            echo "Todo correcto / All right"
-
-            elif [ ${respuesta} = 2 ]
-            then
-                if [[ "${idioma}" == "ES" ]]
-                then
-                    echo -n "Introduzca la IP de esta máquina: "
-                    read laip
-                    cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php
-                else
-                    echo -n "Enter the IP of this machine: "
-                    read laip
-                    cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php   
-                fi
-            elif [ ${respuesta} = 3 ]
-            then
-                echo "Saliendo / Exit"
-        fi
-    else
-        cd /var/www/html/nextcloud/config && sed -i "8i 1 => \'${laip}\',"  config.php
-    fi
 }
 
 error_headless () {
