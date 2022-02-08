@@ -202,7 +202,7 @@ en () {
         echo ""
         echo "7. Exit the script. Exit." 
         echo ""
-        echo -n "Select an option [1 - 6]: "
+        echo -n "Select an option [1 - 7]: "
             read seleccion
             case_versions
     done
