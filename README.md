@@ -46,19 +46,19 @@ sudo bash Nextcloud-Script/Nextcloud-Script.sh
     </td>
     <td align="center">
         <div>
-          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/62dddd4f4c7a20fcfb501d5c298e5b8030671252/Files/img/terminal-3-eng.png">
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/4d1d86478ac073bee8ec79b042b0d891b82bfce9/Files/img/terminal-3-eng.png">
         </div> 
     </td>
   </tr>
   <tr>
     <td align="center">
         <div>
-          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/62dddd4f4c7a20fcfb501d5c298e5b8030671252/Files/img/terminal-4-eng.png">
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/4d1d86478ac073bee8ec79b042b0d891b82bfce9/Files/img/terminal-4-eng.png">
         </div> 
     </td>
     <td align="center">
         <div>
-          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/d21e121fdbb7087a24e0947be5fd2df3c0559f41/Files/img/terminal-5-eng.png">
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/4d1d86478ac073bee8ec79b042b0d891b82bfce9/Files/img/terminal-5-eng.png">
         </div> 
     </td>
     <td align="center">
