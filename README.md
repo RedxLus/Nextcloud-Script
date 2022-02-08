@@ -126,9 +126,45 @@ git clone https://github.com/RedxLus/Nextcloud-Script.git
 sudo bash Nextcloud-Script/Nextcloud-Script.sh
 ```
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/7535f707871127a271aca8d51cd7eec789dd5a37/Files/img/script-instalacion-nextcloud.PNG" alt="install nextcloud" width="20%">
-</p>
+<div align="center">
+<table style="width:100%">
+  <tr>
+    <td align="center">
+        <div>
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/62dddd4f4c7a20fcfb501d5c298e5b8030671252/Files/img/terminal-1-all.png">
+        </div> 
+    </td>
+    <td align="center">
+        <div>
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/62dddd4f4c7a20fcfb501d5c298e5b8030671252/Files/img/terminal-2-all.png">
+        </div> 
+    </td>
+    <td align="center">
+        <div>
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/62dddd4f4c7a20fcfb501d5c298e5b8030671252/Files/img/terminal-3-esp.png">
+        </div> 
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+        <div>
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/62dddd4f4c7a20fcfb501d5c298e5b8030671252/Files/img/terminal-4-esp.png">
+        </div> 
+    </td>
+    <td align="center">
+        <div>
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/d21e121fdbb7087a24e0947be5fd2df3c0559f41/Files/img/terminal-5-esp.png">
+        </div> 
+    </td>
+    <td align="center">
+        <div>
+          <img src="https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/7535f707871127a271aca8d51cd7eec789dd5a37/Files/img/script-instalacion-nextcloud.PNG" width="20%">
+        </div> 
+    </td>
+  </tr>
+</table>
+</div>
+
 
 La instalación dura aproximadamente 4 minutos. Aunque puede variar dependiendo de la velocidad de descarga.
 
