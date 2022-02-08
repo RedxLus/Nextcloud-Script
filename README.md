@@ -9,7 +9,10 @@ Script de instalación rápida de Nextcloud<br>
 
 ___
 ___
+<div align="center"><img src="https://images.emojiterra.com/twitter/v11/512px/1f1fa-1f1f8.png" alt="usa" width="5%"> </div> 
 
+___
+___
 
 
 ## Install
@@ -27,6 +30,45 @@ git clone https://github.com/RedxLus/Nextcloud-Script.git
 # You need to run the Script with root permissions. To do this, depending on the operating system, you can do it in several ways:
 sudo bash Nextcloud-Script/Nextcloud-Script.sh
 ```
+
+<div align="center">
+<table style="width:100%">
+  <tr>
+    <td align="center">
+        <div>
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/62dddd4f4c7a20fcfb501d5c298e5b8030671252/Files/img/terminal-1-all.png">
+        </div> 
+    </td>
+    <td align="center">
+        <div>
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/62dddd4f4c7a20fcfb501d5c298e5b8030671252/Files/img/terminal-2-all.png">
+        </div> 
+    </td>
+    <td align="center">
+        <div>
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/62dddd4f4c7a20fcfb501d5c298e5b8030671252/Files/img/terminal-3-eng.png">
+        </div> 
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+        <div>
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/62dddd4f4c7a20fcfb501d5c298e5b8030671252/Files/img/terminal-4-eng.png">
+        </div> 
+    </td>
+    <td align="center">
+        <div>
+          <img src="https://github.com/RedxLus/Nextcloud-Script/blob/d21e121fdbb7087a24e0947be5fd2df3c0559f41/Files/img/terminal-5-eng.png">
+        </div> 
+    </td>
+    <td align="center">
+        <div>
+          <img src="https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/7535f707871127a271aca8d51cd7eec789dd5a37/Files/img/script-instalacion-nextcloud.PNG" width="20%">
+        </div> 
+    </td>
+  </tr>
+</table>
+</div>
 
 The installation takes approximately 4 minutes. Although it may vary depending on the download speed.
 
@@ -109,7 +151,11 @@ MYSQL database administrator user password: The one entered in the script
 Database name: nextcloud
 
 ___
+___
+<div align="center"><img src="https://images.emojiterra.com/twitter/v11/128px/1f1ea-1f1f8.png" alt="spanish" width="5%"> </div> 
 
+___
+___
 ## Instalación
 
 Hay dos métodos de instalación a seguir con este script. **Ambos tienen el mismo resultado**. El primer método es el recomendado para el usuario promedio, se 
