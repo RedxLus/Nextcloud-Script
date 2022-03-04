@@ -1,7 +1,11 @@
 #!/bin/bash
 
 seleccion="x"
+phpversion="7.4"
+nextcloudversion="23.0.0"
 
+# Esto es para obligar al script a usar SUDO
+# This is to force the script to use SUDO
 if ! [ $(id -u) = 0 ]; then
     clear
     echo "El script debe ejecutarse como root." >&2
@@ -40,20 +44,15 @@ inicio () {
 }
 
 case_versions (){
-
     if [[ "${idioma}" == "ES" ]]
     then
             case ${seleccion} in
             1)
             echo "Ejecutando Script para UBUNTU 20"
-                phpversion="7.4"
-                nextcloudversion="23.0.0"
                 ubuntu_18_and_20
             ;;
             2)
             echo "Ejecutando Script para UBUNTU 18"
-                phpversion="7.2"
-                nextcloudversion="20.0.14"
                 ubuntu_18_and_20
             ;;
             3)
@@ -64,8 +63,6 @@ case_versions (){
             ;;
             4)
             echo "Ejecutando Script para DEBIAN"
-                phpversion="7.4"
-                nextcloudversion="23.0.0"
                 debian
             ;;
             5)
@@ -76,7 +73,6 @@ case_versions (){
             ;;
             6)
             echo "Ejecutando Script para CENTOS"
-           
                 centos
             ;;
             7)
@@ -92,14 +88,10 @@ case_versions (){
             case ${seleccion} in
             1)
             echo "Running Script for UBUNTU 20"
-                phpversion="7.4"
-                nextcloudversion="23.0.0"
                 ubuntu_18_and_20
             ;;
             2)
             echo "Running Script for UBUNTU 18"
-                phpversion="7.2"
-                nextcloudversion="20.0.14"
                 ubuntu_18_and_20
             ;;
             3)
@@ -110,8 +102,6 @@ case_versions (){
             ;;
             4)
             echo "Running Script for DEBIAN"
-                phpversion="7.4"
-                nextcloudversion="23.0.0"
                 debian
             ;;
             5)
@@ -122,7 +112,6 @@ case_versions (){
             ;;
             6)
             echo "Running Script for CENTOS"
-           
                 centos
             ;;
             7)
@@ -135,11 +124,9 @@ case_versions (){
             ;;
             esac
     fi
-
 }
 
 es () {
-
     idioma="ES"
 
     until [ "${seleccion}" = "7" ]; do
@@ -169,7 +156,6 @@ es () {
 }
 
 mensaje_final () {
-
     clear
     echo "Saliendo del instalador ..."
     echo "Recuerde si ha instalado correctamente Nextcloud puede acceder a la URL con su IP:"
@@ -179,7 +165,6 @@ mensaje_final () {
 }
 
 en () {
-
     idioma="EN"
 
     until [ "${seleccion}" = "7" ]; do
@@ -209,7 +194,6 @@ en () {
 }
 
 end_message () {
-
     clear
     echo "Exiting the installer ..."
     echo "Remember if you have successfully installed Nextcloud you can access the URL with your IP:"
@@ -220,7 +204,6 @@ end_message () {
 }
 
 ask_mysql_password () {
-
     if [[ "${idioma}" == "ES" ]]
     then
         # Pedir contraseña para el usuario root para Mysql y la misma para el usuario admin para Nextcloud
@@ -233,7 +216,6 @@ ask_mysql_password () {
         echo "Please enter a password to configure the admin user for Nextcloud and the root user for MySQL:"
         read rootpasswd
     fi
-
     # Actualizar
     # Update
         apt update && apt upgrade -y
@@ -242,7 +224,7 @@ ask_mysql_password () {
 install_apache2 () {
     # Instalar apache, activar modulos y reiniciar
     # Install apache, activate modules and restart
-        apt install apache2 apt-transport-https ca-certificates unzip curl aria2 wget systemd -y
+        apt install apache2 apt-transport-https ca-certificates unzip curl aria2 wget systemd software-properties-common -y
         /etc/init.d/apache2 start && systemctl enable apache2 && a2enmod rewrite headers env dir mime && a2enmod ssl && a2ensite default-ssl.conf
         /etc/init.d/apache2 restart
 }
@@ -265,9 +247,17 @@ install_php () {
                     php${phpversion}-ldap \
                     php${phpversion}-xmlrpc \
                     php${phpversion}-json \
-                    php-redis \
-                    php-imagick \
+                    php${phpversion}-redis \
+                    php${phpversion}-imagick \
                     ffmpeg -y
+}
+
+install_other_version_php_ubuntu () {
+        apt install locales locales-all software-properties-common -y
+        export LANGUAGE=en_US.UTF-8 && export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
+        locale-gen en_US.UTF-8
+        add-apt-repository ppa:ondrej/php -y
+        apt-get update
 }
 
 install_mariadb () {
@@ -278,7 +268,6 @@ install_mariadb () {
         /etc/init.d/mariadb stop && /etc/init.d/mariadb start
         systemctl enable mariadb
         systemctl start mariadb
-
     # Instalación segura mysql. Fuente (https://bit.ly/2T09N8A)
     # Secure mysql installation. Source (https://bit.ly/2T09N8A)
         apt -y install expect
@@ -303,7 +292,6 @@ install_mariadb () {
 
         apt -y purge expect
         apt autoremove -y
-
     # Creación base datos, usuario, privilegios
     # Database creation, user, privileges
         mysql -uroot -p${rootpasswd} -e "CREATE DATABASE nextcloud;"
@@ -318,21 +306,17 @@ install_nextcloud () {
         unzip nextcloud-${nextcloudversion}.zip -d /var/www/html/
         chown -R www-data:www-data /var/www/html/nextcloud/
         rm -r nextcloud-${nextcloudversion}.zip
-
     # Instala sudo (necesario si no esta instalado, aunque suele estarlo)
     # Install sudo (necessary if it is not installed, although it usually is)
         apt install sudo -y
-
     # Instala Nextcloud
     # Install Nextcloud
         cd /var/www/html/nextcloud && sudo -u www-data php occ  maintenance:install --database "mysql" --database-name "nextcloud"  --database-user "admin" --database-pass "${rootpasswd}" --admin-user "admin" --admin-pass "${rootpasswd}"
-
     # Archivo configuracion
     # Configuration file
         cd /etc/apache2/sites-available && curl -LO https://raw.githubusercontent.com/RedxLus/Nextcloud-Script/master/Files/nextcloud.conf
         a2ensite nextcloud
         systemctl restart apache2
-
     # Redireccion SSL
     # SSL redirect
         apt install sed -y
@@ -341,8 +325,8 @@ install_nextcloud () {
 }
 
 ip_config () {
-
-    apt-get install net-tools
+    # Install Net Tools
+        apt-get install net-tools
 
     clear
 
@@ -396,29 +380,21 @@ ip_config () {
 }
 
 debian () {
-
-    if [ -z ${rootpasswd} ]
+    if [[ -z ${rootpasswd} ]]
     then
         ask_mysql_password
-    else
-        exit
     fi
-
+        apt update
     # Install Apache2
         install_apache2
-
     # Instalar PHP y otros  
         install_php
-
     # Install mysql (mariadb)
         install_mariadb
-
     # Install Nextcloud
         install_nextcloud
-
     # Menu 1 (ip)
         ip_config
-
     # Menu 2 (out)
     if [[ "${idioma}" == "ES" ]]
     then
@@ -429,35 +405,25 @@ debian () {
 }
 
 raspberry () {
-
-    if [ -z ${rootpasswd} ]
+    if [[ -z ${rootpasswd} ]]
     then
         ask_mysql_password
-    else
-        exit
     fi
-
     # Install Apache2
         install_apache2
-
     # Instalar PHP y otros
     # Install PHP and others
         # wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
         # getRasperryVersion=$(cat /etc/os-release | grep VERSION_CODENAME | cut -d '=' -f 2)
         # echo "deb https://packages.sury.org/php/ ${getRasperryVersion} main" | tee /etc/apt/sources.list.d/php.list
         # apt update
-    
         install_php
-
     # Install mysql (mariadb)
         install_mariadb
-
     # Install Nextcloud
         install_nextcloud
-
     # Menu 1 (ip)
         ip_config
-
     # Menu 2 (out)
     if [[ "${idioma}" == "ES" ]]
     then
@@ -468,12 +434,9 @@ raspberry () {
 }
 
 ubuntu_16 () {
-
-    if [ -z ${rootpasswd} ]
+    if [[ -z ${rootpasswd} ]]
     then
         ask_mysql_password
-    else
-        exit
     fi
 
     apt-get install apache2 libapache2-mod-php7.0 bzip2 unzip curl -y
@@ -535,57 +498,36 @@ ubuntu_16 () {
 }
 
 ubuntu_18_and_20 () {
-
-    if [ -z ${rootpasswd} ]
+    if [[ -z ${rootpasswd} ]]
     then
         ask_mysql_password
-    else
-        exit
     fi
-
+        apt update
     # Install Apache2
         install_apache2
-
+    # Install other version not default PHP
+        install_other_version_php_ubuntu
     # Install PHP
         install_php
-
     # Install mysql (mariadb)
         install_mariadb
-
     # Install Nextcloud
         install_nextcloud
-
     # Menu 1 (ip)
         ip_config
-
     # Menu 2 (out)
-    if [[ "${idioma}" == "ES" ]]
-    then
-        mensaje_final
-    else
-        end_message
-    fi
-
+        if [[ "${idioma}" == "ES" ]]
+        then
+            mensaje_final
+        else
+            end_message
+        fi
 }
 
 centos () {
-
-    if [ -z ${rootpasswd} ]
+    if [[ -z ${rootpasswd} ]]
     then
-        if [[ "${idioma}" == "ES" ]]
-        then
-            # Pedir contraseña para el usuario root para Mysql y la misma para el usuario admin para Nextcloud
-            echo ""
-            echo "Por favor introduzca una contraseña para configurar el usuario admin para Nextcloud y el usuario root para MySQL:"
-            read rootpasswd
-        else
-            # Ask for password for the root user for Mysql and the same for the admin user for Nextcloud
-            echo ""
-            echo "Please enter a password to configure the admin user for Nextcloud and the root user for MySQL:"
-            read rootpasswd
-        fi
-    else
-        apt update && apt upgrade -y
+        ask_mysql_password
     fi
 
     yum update -y && yum -y install epel-release yum-utils unzip curl \
@@ -666,7 +608,6 @@ centos () {
 }
 
 error_headless () {
-
     echo ""
     echo ""
     echo "Ha ejecutado el script en modo headless pero ha ocurrido algun fallo."
@@ -695,154 +636,92 @@ error_headless () {
     echo ""
 }
 
+# $@
+while getopts "l:s:p:i:" option
+do
+    case "${option}"
+    in
+        l) 
+            idioma=${OPTARG}
+        ;;
+        lenguaje) 
+            idioma=${OPTARG}
+        ;;
+        language) 
+            idioma=${OPTARG}
+        ;;
+        s) 
+            system=${OPTARG}
+        ;;
+        p) 
+            pass=${OPTARG}
+        ;;
+        i) 
+            ip=${OPTARG}
+        ;;
+    esac
+done
 
 if [ ${#} -eq 0 ]
 then
-
     # Inicio normal sin argumentos. Basado en menús
     # Normal start without arguments. Menu-based
     inicio
-
-elif [ ${#} -eq 4 ]
+elif [ ${#} -eq 8 ]
 then
-
-    if [ ${1} == "ES" ]
-    then 
-        idioma="ES"
+    if [ ${idioma} == "ES" ]
+    then
         echo ""
         echo "Instalando en modo headless con los siguientes parámetros:"
-        echo "IDIOMA: ${1}"
-        echo "SISTEMA OPERATIVO: ${2}"
-        echo "CONTRASEÑA NEXTCLOUD Y MYSQL: ${3}"
-            rootpasswd="${3}"
-        echo "IP DE ESTA MÁQUINA: ${4}"
-            laip="${4}"
+        echo "IDIOMA: ${idioma}"
+        echo "SISTEMA OPERATIVO: ${system}"
+        echo "CONTRASEÑA NEXTCLOUD Y MYSQL: ${pass}"
+            rootpasswd="${pass}"
+        echo "IP PRIVADA DE ESTA MÁQUINA: ${ip}"
+            laip="${ip}"
         echo ""
         sleep 3
+
+        case ${system} in
+        ubuntu20)
+            ubuntu_18_and_20
+        ;;
+        ubuntu18)
+            ubuntu_18_and_20
+        ;;
+        ubuntu16)
+            ubuntu_16
+        ;;
+        debian)
+            debian
+        ;;
+        raspberry)
+            raspberry
+        ;;
+        centos)
+            centos
+        ;;
+        *)
+            error_headless
+            sleep 2
+        ;;
+        esac
     else
         idioma="EN"
         echo ""
         echo "Installing in headless mode with the following parameters:"
-        echo "LANGUAGE: ${1}"
-        echo "OPERATING SYSTEM: ${2}"
-        echo "PASSWORD NEXTCLOUD Y MYSQL: ${3}"
-            rootpasswd="${3}"
-        echo "IP OF THIS MACHINE: ${4}"
-            laip="${4}"
+        echo "LANGUAGE: ${idioma}"
+        echo "OPERATING SYSTEM: ${system}"
+        echo "PASSWORD NEXTCLOUD Y MYSQL: ${pass}"
+            rootpasswd="${pass}"
+        echo "PRIVATE IP OF THIS MACHINE: ${ip}"
+            laip="${ip}"
         echo ""
         sleep 3
     fi
-
-    case ${2} in
-            ubuntu20)
-                if [ ${idioma} == "ES" ]
-                then
-                    echo "Ejecutando Script para UBUNTU 20"
-                        phpversion="7.4"
-                        nextcloudversion="23.0.0"
-                        ubuntu_18_and_20
-                    echo ""
-                        mensaje_final
-                else
-                    echo "Running Script for UBUNTU 20"
-                        phpversion="7.4"
-                        nextcloudversion="23.0.0"
-                        ubuntu_18_and_20
-                    echo ""
-                        end_message
-                fi
-            ;;
-            ubuntu18)
-                if [ ${idioma} == "ES" ]
-                then
-                    echo "Ejecutando Script para UBUNTU 18"
-                        phpversion="7.2"
-                        nextcloudversion="20.0.14"
-                        ubuntu_18_and_20
-                    echo ""
-                        mensaje_final
-
-                else
-                    echo "Running Script for UBUNTU 18"
-                        phpversion="7.2"
-                        nextcloudversion="20.0.14"
-                        ubuntu_18_and_20
-                    echo ""
-                        end_message
-                fi
-            ;;
-            ubuntu16)
-                if [ ${idioma} == "ES" ]
-                then
-                    echo "Ejecutando Script para UBUNTU 18"
-                        phpversion="7.2"
-                        nextcloudversion="18.0.0"
-                        ubuntu_16
-                    echo ""
-                        mensaje_final
-
-                else
-                    echo "Running Script for UBUNTU 18"
-                        phpversion="7.2"
-                        nextcloudversion="18.0.0"
-                        ubuntu_16
-                    echo ""
-                        end_message
-                fi
-            ;;
-            debian)
-                if [ ${idioma} == "ES" ]
-                then
-                    echo "Ejecutando Script para DEBIAN"
-                        debian
-                    echo ""
-                        mensaje_final
-
-                else
-                    echo "Running Script for DEBIAN"
-                        debian
-                    echo ""
-                        end_message
-                fi   
-            ;;
-            centos)
-                if [ ${idioma} == "ES" ]
-                then
-                    echo "Ejecutando Script para CENTOS"
-                        centos
-                    echo ""
-                        mensaje_final
-
-                else
-                    echo "Running Script for CENTOS"
-                        centos
-                    echo ""
-                        end_message
-                fi   
-            ;;
-            raspberry)
-                if [ ${idioma} == "ES" ]
-                then
-                    echo "Ejecutando Script para Raspberry Pi OS (Buster/Jessie/Stretch)"
-                        raspberry
-                    echo ""
-                        mensaje_final
-
-                else
-                    echo "Running Script for Raspberry Pi OS (Buster/Jessie/Stretch)"
-                        raspberry
-                    echo ""
-                        end_message
-                fi   
-            ;;
-            *)
-                error_headless
-                sleep 2
-            ;;
-        esac
 else
     echo ""
-    echo "Ha introducido $# en vez de 4 argumentos."
+    echo "Ha introducido $# en vez de los argumentos."
     echo "Revise la documentación para utilizar el modo headless."
     echo ""
         error_headless
