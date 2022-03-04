@@ -82,31 +82,32 @@ The process is based on menus. At the beginning and the end. It is a process tha
 git clone https://github.com/RedxLus/Nextcloud-Script.git
 
 # You need to run the Script with root permissions. To do this, depending on the operating system, you can do it in several ways.
-# You must enter the configuration variables in order. This is a example:
-sudo bash Nextcloud-Script/Nextcloud-Script.sh EN ubuntu18 P@ssw0rd 192.168.1.14
+# This is a example:
+sudo bash Nextcloud-Script/Nextcloud-Script.sh -l EN -s ubuntu20 -p P@ssw0rd -i 192.168.1.14
 ```
 
 Variables and their order:
-1.  First. We put the country code. Possibilities:
+1.  **-l**. We put the country code. Possibilities:
 
 | Variable  | Meaning |
 | ------------- | ------------- |
 | EN  | Script messages in English |
 | ES  | Script messages in Spanish  |
 
-2.  Second. We put the operating system of the machine. Possibilities:
+2.  **-s**. We put the operating system of the machine. Possibilities:
 
 | Variable  | Meaning |
 | ------------- | ------------- |
-| ubuntu16  | The machine has the operating system Ubuntu 16  |
+| ubuntu20  | The machine has the operating system Ubuntu 20  |
 | ubuntu18  | The machine has the operating system Ubuntu 18  |
+| ubuntu16  | The machine has the operating system Ubuntu 16  |
 | debian  | The machine has the operating system Debian  |
+| raspberry  | The machine has the operating system Raspberry OS  |
 | centos  | The machine has the operating system CENTOS  |
-| raspberry  | The machine has the operating system Raspberry OS (Buster/Jessie/Stretch)  |
 
-3.  Third. We put the password to configure the Nextcloud admin user and the MYSQL root user. It can be at your choice.
+3.  **-p**. We put the password to configure the Nextcloud admin user and the MYSQL root user. It can be at your choice.
 
-4. Fourth. We put the private IP of the machine, we can use the command:
+4. **-i**. We put the private IP of the machine, we can use the command:
 ```
 ip a
 ```
@@ -223,19 +224,19 @@ El proceso se basa en menús. Al inicio y al final. Es un proceso que le guiara 
 git clone https://github.com/RedxLus/Nextcloud-Script.git
 
 # Necesita ejecutar el Script con permisos root. Para ello, según el sistema operativo, puede hacerlo de varias formas.
-# Debe introducir las variables de configuración en orden. Este seria un ejemplo:
-sudo bash Nextcloud-Script/Nextcloud-Script.sh ES ubuntu20 P@ssw0rd 192.168.1.14
+# Este seria un ejemplo:
+sudo bash Nextcloud-Script/Nextcloud-Script.sh -l ES -s ubuntu20 -p P@ssw0rd -i 192.168.1.14
 ```
 
 Variables y su orden:
-1.  Primero. Ponemos el código del país. Posibilidades:
+1.  **-l**. Ponemos el código del país. Posibilidades:
 
 | Variable  | Significado |
 | ------------- | ------------- |
 | ES  | Mensajes del script en Español  |
 | EN  | Mensajes del script en Inglés  |
 
-2.  Segundo. Ponemos el sistema operativo de la máquina. Posibilidades:
+2.  **-s**. Ponemos el sistema operativo de la máquina. Posibilidades:
 
 | Variable  | Significado |
 | ------------- | ------------- |
@@ -246,9 +247,9 @@ Variables y su orden:
 | raspberry  | La máquina tiene el sistema operativo Raspberry OS |
 | centos  | La máquina tiene el sistema operativo CENTOS  |
 
-3.  Tercero. Ponemos la contraseña para configurar el usuario admin de Nextcloud y el usuario root de MYSQL. Puede ser a elección.
+3.  **-p**. Ponemos la contraseña para configurar el usuario admin de Nextcloud y el usuario root de MYSQL. Puede ser a elección.
 
-4. Cuarto. Ponemos la IP privada de la máquina, podemos utilizar el comando "ip a" para verla:
+4. **-i**. Ponemos la IP privada de la máquina, podemos utilizar el comando "ip a" para verla:
 ```
 ip a
 ```
