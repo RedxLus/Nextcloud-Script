@@ -681,8 +681,21 @@ then
             laip="${ip}"
         echo ""
         sleep 3
+    else
+        idioma="EN"
+        echo ""
+        echo "Installing in headless mode with the following parameters:"
+        echo "LANGUAGE: ${idioma}"
+        echo "OPERATING SYSTEM: ${system}"
+        echo "PASSWORD NEXTCLOUD Y MYSQL: ${pass}"
+            rootpasswd="${pass}"
+        echo "PRIVATE IP OF THIS MACHINE: ${ip}"
+            laip="${ip}"
+        echo ""
+        sleep 3
+    fi
 
-        case ${system} in
+    case ${system} in
         ubuntu20)
             ubuntu_18_and_20
         ;;
@@ -705,20 +718,7 @@ then
             error_headless
             sleep 2
         ;;
-        esac
-    else
-        idioma="EN"
-        echo ""
-        echo "Installing in headless mode with the following parameters:"
-        echo "LANGUAGE: ${idioma}"
-        echo "OPERATING SYSTEM: ${system}"
-        echo "PASSWORD NEXTCLOUD Y MYSQL: ${pass}"
-            rootpasswd="${pass}"
-        echo "PRIVATE IP OF THIS MACHINE: ${ip}"
-            laip="${ip}"
-        echo ""
-        sleep 3
-    fi
+    esac
 else
     echo ""
     echo "Ha introducido $# en vez de los argumentos."
